@@ -111,6 +111,10 @@ export type ContestMetadata = {
   externalId?: string | null;
 };
 
+/** Alias conceitual para metadados de origem genéricos (PDF, print, API, edital, etc) */
+export type OriginContext = ContestMetadata;
+export type SourceMetadata = ContestMetadata;
+
 /**
  * Questão extraída e normalizada, pronta para validação.
  * Produzida por um adaptador de ingestão a partir do conteúdo bruto.
@@ -321,6 +325,30 @@ export function validateExtractedQuestion(question: ExtractedQuestion): Question
     errors,
     warnings,
   };
+}
+
+/**
+ * Classificação objetiva de qualidade de uma questão.
+ * - VALID: Estrutura essencial íntegra e sem avisos de metadados opcionais ausentes.
+ * - INCOMPLETE: Estrutura essencial íntegra, mas com metadados opcionais ausentes (sem proibir ingestão).
+ * - INVALID: Falta informação estrutural essencial (enunciado ausente, alternativas corrompidas, etc).
+ */
+export type QuestionQualityClass = "VALID" | "INCOMPLETE" | "INVALID";
+
+/**
+ * Classifica objetivamente a qualidade de uma questão extraída.
+ *
+ * Determinístico: mesmo input → mesmo output.
+ */
+export function classifyQuestionQuality(question: ExtractedQuestion): QuestionQualityClass {
+  const validation = validateExtractedQuestion(question);
+  if (!validation.isValid) {
+    return "INVALID";
+  }
+  if (validation.warnings.length > 0) {
+    return "INCOMPLETE";
+  }
+  return "VALID";
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

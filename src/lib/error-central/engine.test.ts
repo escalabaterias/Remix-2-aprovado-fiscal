@@ -97,26 +97,20 @@ describe("computeRecencyFactor", () => {
   });
 
   it("erro há ~14 dias → ~0.5 (meia-vida)", () => {
-    const fourteenDaysAgo = new Date(
-      new Date(REF_DATE).getTime() - 14 * 86_400_000,
-    ).toISOString();
+    const fourteenDaysAgo = new Date(new Date(REF_DATE).getTime() - 14 * 86_400_000).toISOString();
     const factor = computeRecencyFactor(fourteenDaysAgo, REF_DATE);
     expect(factor).toBeCloseTo(0.5, 1);
   });
 
   it("erro há 60 dias → valor baixo (<0.1)", () => {
-    const sixtyDaysAgo = new Date(
-      new Date(REF_DATE).getTime() - 60 * 86_400_000,
-    ).toISOString();
+    const sixtyDaysAgo = new Date(new Date(REF_DATE).getTime() - 60 * 86_400_000).toISOString();
     const factor = computeRecencyFactor(sixtyDaysAgo, REF_DATE);
     expect(factor).toBeLessThan(0.1);
   });
 
   it("retorna valor entre 0 e 1", () => {
     for (const days of [0, 1, 7, 14, 30, 60, 90, 365]) {
-      const past = new Date(
-        new Date(REF_DATE).getTime() - days * 86_400_000,
-      ).toISOString();
+      const past = new Date(new Date(REF_DATE).getTime() - days * 86_400_000).toISOString();
       const factor = computeRecencyFactor(past, REF_DATE);
       expect(factor).toBeGreaterThanOrEqual(0);
       expect(factor).toBeLessThanOrEqual(1);
@@ -124,9 +118,7 @@ describe("computeRecencyFactor", () => {
   });
 
   it("erro no futuro → clamp em 1", () => {
-    const future = new Date(
-      new Date(REF_DATE).getTime() + 10 * 86_400_000,
-    ).toISOString();
+    const future = new Date(new Date(REF_DATE).getTime() + 10 * 86_400_000).toISOString();
     const factor = computeRecencyFactor(future, REF_DATE);
     expect(factor).toBe(1);
   });
@@ -440,9 +432,7 @@ describe("prioritizeErrors", () => {
 
   it("usa KnowledgeMap para buscar o mastery do tópico", () => {
     const error = mkError({ id: "km-test", topicId: "topic-X" });
-    const km = mkKnowledgeMap([
-      ["topic-X", mkKnowledge({ mastery: 0.1, confidence: 0.9 })],
-    ]);
+    const km = mkKnowledgeMap([["topic-X", mkKnowledge({ mastery: 0.1, confidence: 0.9 })]]);
 
     const result = prioritizeErrors([error], km, REF_DATE);
     // Com mastery baixo e confidence alta, masteryImpact deve ser alto
@@ -460,9 +450,7 @@ describe("prioritizeErrors", () => {
       mkError({
         id: `bulk-${i}`,
         isResolved: i % 3 === 0,
-        occurredAt: new Date(
-          new Date(REF_DATE).getTime() - i * 3 * 86_400_000,
-        ).toISOString(),
+        occurredAt: new Date(new Date(REF_DATE).getTime() - i * 3 * 86_400_000).toISOString(),
       }),
     );
     const result = prioritizeErrors(errors, new Map(), REF_DATE);
@@ -655,12 +643,7 @@ describe("invariantes globais", () => {
       occurredAt: "2026-08-28T10:00:00Z",
     });
 
-    const result = computeErrorPriority(
-      recurring,
-      [resolved, recurring],
-      mkKnowledge(),
-      REF_DATE,
-    );
+    const result = computeErrorPriority(recurring, [resolved, recurring], mkKnowledge(), REF_DATE);
     // Deve detectar recorrência corretamente (usando isRecurringError)
     expect(result.factors.recurrence).toBe(1);
   });

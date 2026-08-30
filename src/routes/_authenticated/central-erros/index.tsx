@@ -216,9 +216,7 @@ function CentralErrosPage() {
   const unresolvedErrors = filtered.filter((pe) => !pe.error.isResolved).length;
   const highPriorityCount = filtered.filter((pe) => pe.score >= 0.7).length;
   const avgScore =
-    filtered.length > 0
-      ? filtered.reduce((sum, pe) => sum + pe.score, 0) / filtered.length
-      : 0;
+    filtered.length > 0 ? filtered.reduce((sum, pe) => sum + pe.score, 0) / filtered.length : 0;
 
   // Resumos de tópico filtrados por matéria
   const filteredSummaries = useMemo(() => {
@@ -486,10 +484,8 @@ function ErrorList({
               <p className="text-xs text-muted-foreground">
                 {new Date(pe.error.occurredAt).toLocaleDateString("pt-BR")}
                 {" · "}
-                Recência {(pe.factors.recency * 100).toFixed(0)}%
-                {" · "}
-                Impacto {(pe.factors.masteryImpact * 100).toFixed(0)}%
-                {" · "}
+                Recência {(pe.factors.recency * 100).toFixed(0)}%{" · "}
+                Impacto {(pe.factors.masteryImpact * 100).toFixed(0)}%{" · "}
                 Frequência {(pe.factors.categoryFrequency * 100).toFixed(0)}%
               </p>
             </div>

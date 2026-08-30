@@ -68,7 +68,7 @@ function createUpdateChain(): any {
   return chain;
 }
 
-const mockFrom = vi.fn().mockImplementation((table: string) => {
+function defaultMockFrom(table: string) {
   trackCall("from", table);
   return {
     select: (...args: any[]) => {
@@ -84,7 +84,9 @@ const mockFrom = vi.fn().mockImplementation((table: string) => {
       return createUpdateChain();
     },
   };
-});
+}
+
+const mockFrom = vi.fn().mockImplementation(defaultMockFrom);
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
@@ -155,6 +157,7 @@ function resetMocks() {
     warnings: [],
   };
   mockCalls.length = 0;
+  mockFrom.mockImplementation(defaultMockFrom);
   vi.clearAllMocks();
 }
 

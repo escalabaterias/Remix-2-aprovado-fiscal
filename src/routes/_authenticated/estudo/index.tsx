@@ -386,17 +386,13 @@ function ActiveSessionView({
 }) {
   const [currentIndex, setCurrentIndex] = useState<number>(() => {
     // Start at the first non-completed activity
-    const idx = activities.findIndex(
-      (a) => a.status === "pendente" || a.status === "em_andamento",
-    );
+    const idx = activities.findIndex((a) => a.status === "pendente" || a.status === "em_andamento");
     return idx >= 0 ? idx : 0;
   });
 
   // Update currentIndex when activities change (after completing one)
   useEffect(() => {
-    const idx = activities.findIndex(
-      (a) => a.status === "pendente" || a.status === "em_andamento",
-    );
+    const idx = activities.findIndex((a) => a.status === "pendente" || a.status === "em_andamento");
     if (idx >= 0) setCurrentIndex(idx);
   }, [activities]);
 
@@ -554,9 +550,7 @@ function ActiveSessionView({
             </div>
 
             {currentActivity.priorityReason ? (
-              <p className="mt-3 text-sm text-muted-foreground">
-                {currentActivity.priorityReason}
-              </p>
+              <p className="mt-3 text-sm text-muted-foreground">{currentActivity.priorityReason}</p>
             ) : null}
 
             <div className="mt-5 flex gap-2">
@@ -608,10 +602,10 @@ function ActiveSessionView({
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs text-muted-foreground">
-                          {idx + 1}.
-                        </span>
-                        <p className={`truncate font-medium ${isDone ? "line-through opacity-60" : ""}`}>
+                        <span className="font-mono text-xs text-muted-foreground">{idx + 1}.</span>
+                        <p
+                          className={`truncate font-medium ${isDone ? "line-through opacity-60" : ""}`}
+                        >
                           {activity.topicName}
                         </p>
                       </div>
@@ -633,15 +627,8 @@ function ActiveSessionView({
                               ? "Adiada"
                               : "Pendente"}
                       </Badge>
-                      {!isDone &&
-                      activity.status !== "adiada" &&
-                      !isCurrent &&
-                      !allDone ? (
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => setCurrentIndex(idx)}
-                        >
+                      {!isDone && activity.status !== "adiada" && !isCurrent && !allDone ? (
+                        <Button size="sm" variant="ghost" onClick={() => setCurrentIndex(idx)}>
                           Ir para
                         </Button>
                       ) : null}

@@ -76,7 +76,10 @@ describe("buildSession — casos básicos", () => {
 
   it("3. múltiplas tarefas alocadas em ordem de prioridade", () => {
     const tasks = [task("a", 3), task("b", 8), task("c", 5)];
-    const r = buildSession(tasks, cfg({ availableMinutes: 200, interleaveSubjects: false }));
+    const r = buildSession(
+      tasks,
+      cfg({ availableMinutes: 200, interleaveSubjects: false, maxSubjectShare: 1 }),
+    );
     expect(r.activities).toHaveLength(3);
     expect(r.activities[0]!.taskId).toBe("task-b");
     expect(r.activities[1]!.taskId).toBe("task-c");
@@ -98,7 +101,12 @@ describe("buildSession — casos básicos", () => {
   it("5. descarta tarefa se tempo restante é menor que minActivityMinutes", () => {
     const r = buildSession(
       [task("a", 7, { plannedMinutes: 50 }), task("b", 5, { plannedMinutes: 50 })],
-      cfg({ availableMinutes: 55, minActivityMinutes: 10, interleaveSubjects: false, maxSubjectShare: 1 }),
+      cfg({
+        availableMinutes: 55,
+        minActivityMinutes: 10,
+        interleaveSubjects: false,
+        maxSubjectShare: 1,
+      }),
     );
     expect(r.activities).toHaveLength(1);
     expect(r.discardedTasks).toHaveLength(1);
@@ -177,46 +185,46 @@ describe("buildSession — tarefas inválidas", () => {
 
 describe("buildSession — ordering strategies", () => {
   it("13. review_first: revisões vêm antes de estudo novo", () => {
-    const tasks = [
-      task("study", 9),
-      reviewTask("rev", 0.5, { priorityScore: 4 }),
-    ];
-    const r = buildSession(tasks, cfg({
-      availableMinutes: 200,
-      ordering: "review_first",
-      interleaveSubjects: false,
-      maxSubjectShare: 1,
-    }));
+    const tasks = [task("study", 9), reviewTask("rev", 0.5, { priorityScore: 4 })];
+    const r = buildSession(
+      tasks,
+      cfg({
+        availableMinutes: 200,
+        ordering: "review_first",
+        interleaveSubjects: false,
+        maxSubjectShare: 1,
+      }),
+    );
     expect(r.activities[0]!.taskId).toBe("task-rev");
     expect(r.activities[1]!.taskId).toBe("task-study");
   });
 
   it("14. study_first: estudo novo vem antes de revisões", () => {
-    const tasks = [
-      reviewTask("rev", 0.9, { priorityScore: 9 }),
-      task("study", 3),
-    ];
-    const r = buildSession(tasks, cfg({
-      availableMinutes: 200,
-      ordering: "study_first",
-      interleaveSubjects: false,
-      maxSubjectShare: 1,
-    }));
+    const tasks = [reviewTask("rev", 0.9, { priorityScore: 9 }), task("study", 3)];
+    const r = buildSession(
+      tasks,
+      cfg({
+        availableMinutes: 200,
+        ordering: "study_first",
+        interleaveSubjects: false,
+        maxSubjectShare: 1,
+      }),
+    );
     expect(r.activities[0]!.taskId).toBe("task-study");
     expect(r.activities[1]!.taskId).toBe("task-rev");
   });
 
   it("15. priority: mistura revisão e estudo por score puro", () => {
-    const tasks = [
-      task("study", 9),
-      reviewTask("rev", 0.9, { priorityScore: 3 }),
-    ];
-    const r = buildSession(tasks, cfg({
-      availableMinutes: 200,
-      ordering: "priority",
-      interleaveSubjects: false,
-      maxSubjectShare: 1,
-    }));
+    const tasks = [task("study", 9), reviewTask("rev", 0.9, { priorityScore: 3 })];
+    const r = buildSession(
+      tasks,
+      cfg({
+        availableMinutes: 200,
+        ordering: "priority",
+        interleaveSubjects: false,
+        maxSubjectShare: 1,
+      }),
+    );
     expect(r.activities[0]!.taskId).toBe("task-study"); // score 9 > 3
     expect(r.activities[1]!.taskId).toBe("task-rev");
   });
@@ -226,12 +234,15 @@ describe("buildSession — ordering strategies", () => {
       reviewTask("normal", 0.3, { priorityScore: 8 }),
       reviewTask("urgent", 0.9, { priorityScore: 4 }),
     ];
-    const r = buildSession(tasks, cfg({
-      availableMinutes: 200,
-      ordering: "review_first",
-      interleaveSubjects: false,
-      maxSubjectShare: 1,
-    }));
+    const r = buildSession(
+      tasks,
+      cfg({
+        availableMinutes: 200,
+        ordering: "review_first",
+        interleaveSubjects: false,
+        maxSubjectShare: 1,
+      }),
+    );
     expect(r.activities[0]!.taskId).toBe("task-urgent");
     expect(r.activities[1]!.taskId).toBe("task-normal");
   });
@@ -246,11 +257,14 @@ describe("buildSession — teto por matéria", () => {
       task("a2", 8, { subjectId: "s1", subjectName: "S1", plannedMinutes: 60 }),
       task("b1", 7, { subjectId: "s2", subjectName: "S2", plannedMinutes: 60 }),
     ];
-    const r = buildSession(tasks, cfg({
-      availableMinutes: 200,
-      maxSubjectShare: 0.5,
-      interleaveSubjects: false,
-    }));
+    const r = buildSession(
+      tasks,
+      cfg({
+        availableMinutes: 200,
+        maxSubjectShare: 0.5,
+        interleaveSubjects: false,
+      }),
+    );
     const s1Minutes = r.activities
       .filter((a) => a.subjectId === "s1")
       .reduce((sum, a) => sum + a.allocatedMinutes, 0);
@@ -263,11 +277,14 @@ describe("buildSession — teto por matéria", () => {
       task("a2", 8, { subjectId: "s1", plannedMinutes: 50 }),
       task("a3", 7, { subjectId: "s1", plannedMinutes: 50 }),
     ];
-    const r = buildSession(tasks, cfg({
-      availableMinutes: 150,
-      maxSubjectShare: 1,
-      interleaveSubjects: false,
-    }));
+    const r = buildSession(
+      tasks,
+      cfg({
+        availableMinutes: 150,
+        maxSubjectShare: 1,
+        interleaveSubjects: false,
+      }),
+    );
     expect(r.activities).toHaveLength(3);
     expect(r.allocatedMinutes).toBe(150);
   });
@@ -277,11 +294,14 @@ describe("buildSession — teto por matéria", () => {
       task("a1", 9, { subjectId: "s1", subjectName: "S1", plannedMinutes: 50 }),
       task("a2", 8, { subjectId: "s1", subjectName: "S1", plannedMinutes: 50 }),
     ];
-    const r = buildSession(tasks, cfg({
-      availableMinutes: 100,
-      maxSubjectShare: 0.5,
-      interleaveSubjects: false,
-    }));
+    const r = buildSession(
+      tasks,
+      cfg({
+        availableMinutes: 100,
+        maxSubjectShare: 0.5,
+        interleaveSubjects: false,
+      }),
+    );
     expect(r.activities).toHaveLength(1);
     expect(r.discardedTasks).toHaveLength(1);
     expect(r.discardedTasks[0]!.reason).toContain("Teto de matéria");
@@ -298,12 +318,15 @@ describe("buildSession — intercalação de matérias", () => {
       task("b1", 7, { subjectId: "s2", subjectName: "S2" }),
       task("b2", 6, { subjectId: "s2", subjectName: "S2" }),
     ];
-    const r = buildSession(tasks, cfg({
-      availableMinutes: 300,
-      maxSubjectShare: 1,
-      interleaveSubjects: true,
-      ordering: "priority",
-    }));
+    const r = buildSession(
+      tasks,
+      cfg({
+        availableMinutes: 300,
+        maxSubjectShare: 1,
+        interleaveSubjects: true,
+        ordering: "priority",
+      }),
+    );
     // Round-robin: s1, s2, s1, s2
     expect(r.activities[0]!.subjectId).toBe("s1");
     expect(r.activities[1]!.subjectId).toBe("s2");
@@ -317,12 +340,15 @@ describe("buildSession — intercalação de matérias", () => {
       task("a2", 7, { subjectId: "s1", subjectName: "S1" }),
       task("b1", 8, { subjectId: "s2", subjectName: "S2" }),
     ];
-    const r = buildSession(tasks, cfg({
-      availableMinutes: 300,
-      maxSubjectShare: 1,
-      interleaveSubjects: false,
-      ordering: "priority",
-    }));
+    const r = buildSession(
+      tasks,
+      cfg({
+        availableMinutes: 300,
+        maxSubjectShare: 1,
+        interleaveSubjects: false,
+        ordering: "priority",
+      }),
+    );
     expect(r.activities[0]!.taskId).toBe("task-a1"); // score 9
     expect(r.activities[1]!.taskId).toBe("task-b1"); // score 8
     expect(r.activities[2]!.taskId).toBe("task-a2"); // score 7
@@ -337,12 +363,15 @@ describe("buildSession — intercalação de matérias", () => {
       task("b2", 5, { subjectId: "s2", subjectName: "S2" }),
       task("c2", 4, { subjectId: "s3", subjectName: "S3" }),
     ];
-    const r = buildSession(tasks, cfg({
-      availableMinutes: 400,
-      maxSubjectShare: 1,
-      interleaveSubjects: true,
-      ordering: "priority",
-    }));
+    const r = buildSession(
+      tasks,
+      cfg({
+        availableMinutes: 400,
+        maxSubjectShare: 1,
+        interleaveSubjects: true,
+        ordering: "priority",
+      }),
+    );
     // Round-robin: s1(a1), s2(b1), s3(c1), s1(a2), s2(b2), s3(c2)
     expect(r.activities[0]!.subjectId).toBe("s1");
     expect(r.activities[1]!.subjectId).toBe("s2");
@@ -358,11 +387,13 @@ describe("buildSession — intercalação de matérias", () => {
 describe("buildSession — preservação de campos", () => {
   it("23. preserva reviewType, reviewIntensity, reviewUrgency em revisões", () => {
     const r = buildSession(
-      [reviewTask("rev", 0.75, {
-        reviewType: "erro_direcionado",
-        reviewIntensity: "intensiva",
-        activity: "exercicios",
-      })],
+      [
+        reviewTask("rev", 0.75, {
+          reviewType: "erro_direcionado",
+          reviewIntensity: "intensiva",
+          activity: "exercicios",
+        }),
+      ],
       cfg({ availableMinutes: 120 }),
     );
     const a = r.activities[0]!;
@@ -374,10 +405,7 @@ describe("buildSession — preservação de campos", () => {
   });
 
   it("24. estudo novo tem reviewUrgency=null, reviewType=null", () => {
-    const r = buildSession(
-      [task("study", 7)],
-      cfg({ availableMinutes: 120 }),
-    );
+    const r = buildSession([task("study", 7)], cfg({ availableMinutes: 120 }));
     const a = r.activities[0]!;
     expect(a.reviewUrgency).toBeNull();
     expect(a.reviewType).toBeNull();
@@ -412,16 +440,16 @@ describe("buildSession — métricas e warnings", () => {
     const tasks = Array.from({ length: 10 }, (_, i) =>
       task(`t${i}`, 9 - i, { plannedMinutes: 50 }),
     );
-    const r = buildSession(tasks, cfg({ availableMinutes: 100, maxSubjectShare: 1, interleaveSubjects: false }));
+    const r = buildSession(
+      tasks,
+      cfg({ availableMinutes: 100, maxSubjectShare: 1, interleaveSubjects: false }),
+    );
     expect(r.discardedTasks.length).toBeGreaterThan(0);
     expect(r.warnings.length).toBeGreaterThan(0);
   });
 
   it("28. sem warning quando tudo cabe", () => {
-    const r = buildSession(
-      [task("a", 7, { plannedMinutes: 30 })],
-      cfg({ availableMinutes: 120 }),
-    );
+    const r = buildSession([task("a", 7, { plannedMinutes: 30 })], cfg({ availableMinutes: 120 }));
     expect(r.warnings).toEqual([]);
   });
 });
@@ -445,7 +473,7 @@ describe("buildSession — determinismo", () => {
 
   it("30. muitas tarefas permanecem determinísticas", () => {
     const tasks = Array.from({ length: 50 }, (_, i) =>
-      task(`t${i}`, 9 - (i * 0.1), {
+      task(`t${i}`, 9 - i * 0.1, {
         subjectId: `s${i % 5}`,
         subjectName: `Matéria ${i % 5}`,
         plannedMinutes: 30 + (i % 20),
@@ -477,10 +505,7 @@ describe("buildSession — edge cases", () => {
   });
 
   it("33. apenas revisões, sem estudo novo", () => {
-    const tasks = [
-      reviewTask("r1", 0.9),
-      reviewTask("r2", 0.5),
-    ];
+    const tasks = [reviewTask("r1", 0.9), reviewTask("r2", 0.5)];
     const r = buildSession(tasks, cfg({ availableMinutes: 120, maxSubjectShare: 1 }));
     expect(r.activities.every((a) => a.source === "review_engine")).toBe(true);
     expect(r.activities).toHaveLength(2);
@@ -494,11 +519,14 @@ describe("buildSession — edge cases", () => {
 
   it("35. posição (position) é sequencial e 0-based", () => {
     const tasks = [task("a", 9), task("b", 7), task("c", 5)];
-    const r = buildSession(tasks, cfg({
-      availableMinutes: 300,
-      maxSubjectShare: 1,
-      interleaveSubjects: false,
-    }));
+    const r = buildSession(
+      tasks,
+      cfg({
+        availableMinutes: 300,
+        maxSubjectShare: 1,
+        interleaveSubjects: false,
+      }),
+    );
     r.activities.forEach((a, i) => expect(a.position).toBe(i));
   });
 
@@ -510,12 +538,15 @@ describe("buildSession — edge cases", () => {
       task("b2", 7, { subjectId: "s2", subjectName: "S2", plannedMinutes: 40 }),
       task("c1", 6, { subjectId: "s3", subjectName: "S3", plannedMinutes: 40 }),
     ];
-    const r = buildSession(tasks, cfg({
-      availableMinutes: 120,
-      maxSubjectShare: 0.4,
-      interleaveSubjects: true,
-      ordering: "priority",
-    }));
+    const r = buildSession(
+      tasks,
+      cfg({
+        availableMinutes: 120,
+        maxSubjectShare: 0.4,
+        interleaveSubjects: true,
+        ordering: "priority",
+      }),
+    );
     // Cada matéria pode ter no máximo 48min (0.4 * 120)
     const bySubject = new Map<string, number>();
     for (const a of r.activities) {

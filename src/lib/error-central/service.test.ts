@@ -98,17 +98,21 @@ function createChainableBuilder(table: string): Record<string, unknown> {
   return builder;
 }
 
-const mockAuth = {
-  getUser: vi.fn().mockResolvedValue({
-    data: { user: { id: "user-mock" } },
-    error: null,
-  }),
-};
+const { mockAuth, mockSupabase } = vi.hoisted(() => {
+  const mockAuth = {
+    getUser: vi.fn().mockResolvedValue({
+      data: { user: { id: "user-mock" } },
+      error: null,
+    }),
+  };
 
-const mockSupabase = {
-  auth: mockAuth,
-  from: vi.fn().mockImplementation((table: string) => createChainableBuilder(table)),
-};
+  const mockSupabase = {
+    auth: mockAuth,
+    from: vi.fn().mockImplementation((table: string) => createChainableBuilder(table)),
+  };
+
+  return { mockAuth, mockSupabase };
+});
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: mockSupabase,

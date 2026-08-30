@@ -17,6 +17,7 @@ import {
 
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/layout/AppShell";
+import { WhatToStudyNowCard } from "@/components/study/WhatToStudyNowCard";
 import { EmptyState } from "@/components/common/EmptyState";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -499,99 +500,12 @@ function CommandCenterPage() {
           </section>
         </div>
 
-        {/* ── CARD ORIENTADO À AÇÃO: O QUE FAZER AGORA? ───────────────────────── */}
-        <section className="panel border-primary/40 bg-card p-5">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <p className="label-eyebrow text-primary">O que devo fazer agora?</p>
-            </div>
-            {data.activePlan ? (
-              <Button asChild size="sm" variant="ghost">
-                <Link to="/plano/$planId" params={{ planId: data.activePlan.id }}>
-                  Abrir plano completo
-                </Link>
-              </Button>
-            ) : null}
-          </div>
-
-          {!data.hasPlan ? (
-            <div className="mt-3">
-              <p className="text-sm text-muted-foreground">
-                Você ainda não possui um plano de estudos gerado para o concurso ativo.
-              </p>
-              <Button asChild size="sm" className="mt-3">
-                <Link to="/plano">Criar plano de estudos</Link>
-              </Button>
-            </div>
-          ) : !nextTask ? (
-            <div className="mt-3 flex items-center gap-3">
-              <CheckCircle2 className="h-6 w-6 text-emerald-400 shrink-0" />
-              <div>
-                <p className="text-sm font-semibold">Todas as tarefas de hoje foram concluídas!</p>
-                <p className="text-xs text-muted-foreground">
-                  Você pode praticar questões avulsas, revisar flashcards ou adiantar o próximo
-                  bloco.
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="mt-3 space-y-3">
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="font-display text-xl font-bold">{nextTask.title}</h3>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                <Badge variant="default">
-                  {nextTask.activity_type ? ACTIVITY_LABELS[nextTask.activity_type] : "Estudo"}
-                </Badge>
-                <Badge variant="outline" className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  {nextTask.planned_minutes ?? 50} min planejados
-                </Badge>
-                <Badge variant="outline">
-                  Prioridade: {nextTask.priority_score?.toFixed(1) ?? "—"}
-                </Badge>
-                <Badge variant="outline">{TASK_STATUS_LABELS[nextTask.status]}</Badge>
-                {nextTask.source === "review_engine" ? (
-                  <Badge variant="secondary">Revisão Agendada</Badge>
-                ) : null}
-              </div>
-
-              {nextTask.priority_reason ? (
-                <p className="text-xs text-muted-foreground/90 border-l-2 border-primary/40 pl-3">
-                  <span className="font-semibold text-foreground">Por que estudar agora:</span>{" "}
-                  {nextTask.priority_reason}
-                </p>
-              ) : null}
-
-              <div className="flex flex-wrap items-center gap-2 pt-2">
-                {nextTask.status === "pendente" ? (
-                  <Button
-                    size="sm"
-                    onClick={() => startTaskMutation.mutate(nextTask.id)}
-                    disabled={startTaskMutation.isPending}
-                  >
-                    <Play className="mr-1.5 h-3.5 w-3.5" />
-                    Iniciar tarefa
-                  </Button>
-                ) : null}
-
-                <Button asChild size="sm" variant="default">
-                  <Link to="/estudo">
-                    <Target className="mr-1.5 h-3.5 w-3.5" />
-                    Executar em Modo Foco
-                  </Link>
-                </Button>
-
-                <Button size="sm" variant="outline" onClick={() => handleOpenComplete(nextTask)}>
-                  <CheckCircle2 className="mr-1.5 h-3.5 w-3.5" />
-                  Registrar conclusão
-                </Button>
-              </div>
-            </div>
-          )}
-        </section>
+        {/* ── CARD ORIENTADO À AÇÃO: O QUE ESTUDAR AGORA ───────────────────────── */}
+        <WhatToStudyNowCard
+          activePlanId={data.activePlan?.id}
+          contestId={data.activeContest?.id}
+          onStartTask={(taskId) => startTaskMutation.mutate(taskId)}
+        />
 
         {/* ── LISTA DE TAREFAS DE HOJE ────────────────────────────────────────── */}
         <section className="panel p-5">

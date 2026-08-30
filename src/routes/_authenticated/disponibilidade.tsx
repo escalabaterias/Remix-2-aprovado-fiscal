@@ -18,7 +18,11 @@ import {
   weekTotalMinutes,
   type AvailabilityWeek,
 } from "@/lib/planner/availability";
-import { fetchAvailabilityWeeks, nextWeekStarts, upsertAvailabilityWeek } from "@/lib/planner/service";
+import {
+  fetchAvailabilityWeeks,
+  nextWeekStarts,
+  upsertAvailabilityWeek,
+} from "@/lib/planner/service";
 
 export const Route = createFileRoute("/_authenticated/disponibilidade")({
   head: () => ({
@@ -144,7 +148,8 @@ function AvailabilityPage() {
                 {!isSaved ? (
                   <Alert variant="default" className="mt-3">
                     <AlertDescription>
-                      ⚠️ Disponibilidade não cadastrada para esta semana. O planejador tratará como 0 minutos até que você salve.
+                      ⚠️ Disponibilidade não cadastrada para esta semana. O planejador tratará como
+                      0 minutos até que você salve.
                     </AlertDescription>
                   </Alert>
                 ) : null}

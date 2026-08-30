@@ -321,9 +321,7 @@ export function buildSession(
   const allocatedMinutes = activities.reduce((sum, a) => sum + a.allocatedMinutes, 0);
 
   if (discarded.length > 0 && activities.length > 0) {
-    warnings.push(
-      `${discarded.length} tarefa(s) não couberam na sessão de ${available}min.`,
-    );
+    warnings.push(`${discarded.length} tarefa(s) não couberam na sessão de ${available}min.`);
   }
 
   return {

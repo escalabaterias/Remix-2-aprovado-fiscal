@@ -174,11 +174,19 @@ export function filterQuestions(
     if (filter.subjectId != null && q.subjectId !== filter.subjectId) return false;
     if (filter.topicId != null && q.topicId !== filter.topicId) return false;
     if (filter.contestId != null && q.contestId !== filter.contestId) return false;
-    if (filter.examBoard != null && q.examBoard !== filter.examBoard) return false;
+    if (filter.sourceId != null && q.sourceId !== filter.sourceId) return false;
 
+    if (filter.examBoard != null && filter.examBoard !== "") {
+      const targetBoard = filter.examBoard.trim().toLowerCase();
+      const qBoard = q.examBoard?.trim().toLowerCase();
+      if (qBoard !== targetBoard) return false;
+    }
+
+    if (filter.year != null && q.year !== filter.year) return false;
     if (filter.yearMin != null && (q.year === null || q.year < filter.yearMin)) return false;
     if (filter.yearMax != null && (q.year === null || q.year > filter.yearMax)) return false;
 
+    if (filter.difficulty != null && q.difficulty !== filter.difficulty) return false;
     if (
       filter.difficultyMin != null &&
       (q.difficulty === null || q.difficulty < filter.difficultyMin)
@@ -189,6 +197,22 @@ export function filterQuestions(
       (q.difficulty === null || q.difficulty > filter.difficultyMax)
     )
       return false;
+
+    if (filter.organization != null && filter.organization !== "") {
+      const targetOrg = filter.organization.trim().toLowerCase();
+      const qOrg = (q.metadata?.organization as string) || q.contest?.organization || "";
+      if (qOrg.trim().toLowerCase() !== targetOrg) return false;
+    }
+
+    if (filter.roleTitle != null && filter.roleTitle !== "") {
+      const targetRole = filter.roleTitle.trim().toLowerCase();
+      const qRole =
+        (q.metadata?.position as string) ||
+        (q.metadata?.role_title as string) ||
+        q.contest?.roleTitle ||
+        "";
+      if (qRole.trim().toLowerCase() !== targetRole) return false;
+    }
 
     if (filter.origin != null && q.origin !== filter.origin) return false;
     if (filter.novelty != null && q.novelty !== filter.novelty) return false;
@@ -244,8 +268,8 @@ export function rankQuestionsForStudy(
     let score = 0;
 
     if (!q.stats || q.stats.totalAttempts === 0) {
-      // Nunca tentada
-      score = 100;
+      // Nunca tentada — prioridade máxima absoluta
+      score = 200;
     } else {
       const s = q.stats;
 

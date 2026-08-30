@@ -30,42 +30,48 @@ type MockRow = {
   topics: { name: string } | null;
 };
 
-let mockAuthUser: { id: string } | null = { id: "user-1" };
-let mockAuthError: Error | null = null;
-let mockQueryData: MockRow[] = [];
-let mockQueryError: Error | null = null;
-
-const mockOrder = vi.fn().mockImplementation(() => ({
-  order: mockOrder,
-  then: (resolve: (v: unknown) => void) =>
-    resolve({ data: mockQueryData, error: mockQueryError }),
+const mockState = vi.hoisted(() => ({
+  user: { id: "user-1" } as { id: string } | null,
+  authError: null as Error | null,
+  queryData: [] as MockRow[],
+  queryError: null as Error | null,
 }));
 
-const mockEq = vi.fn().mockImplementation(() => ({
-  eq: mockEq,
-  order: mockOrder,
-  then: (resolve: (v: unknown) => void) =>
-    resolve({ data: mockQueryData, error: mockQueryError }),
-}));
+const { mockFrom } = vi.hoisted(() => {
+  const mockOrder: any = vi.fn().mockImplementation(() => ({
+    order: mockOrder,
+    then: (resolve: (v: unknown) => void) =>
+      resolve({ data: mockState.queryData, error: mockState.queryError }),
+  }));
 
-const mockSelect = vi.fn().mockImplementation(() => ({
-  eq: mockEq,
-  order: mockOrder,
-  then: (resolve: (v: unknown) => void) =>
-    resolve({ data: mockQueryData, error: mockQueryError }),
-}));
+  const mockEq: any = vi.fn().mockImplementation(() => ({
+    eq: mockEq,
+    order: mockOrder,
+    then: (resolve: (v: unknown) => void) =>
+      resolve({ data: mockState.queryData, error: mockState.queryError }),
+  }));
 
-const mockFrom = vi.fn().mockImplementation(() => ({
-  select: mockSelect,
-}));
+  const mockSelect: any = vi.fn().mockImplementation(() => ({
+    eq: mockEq,
+    order: mockOrder,
+    then: (resolve: (v: unknown) => void) =>
+      resolve({ data: mockState.queryData, error: mockState.queryError }),
+  }));
+
+  const mockFrom: any = vi.fn().mockImplementation(() => ({
+    select: mockSelect,
+  }));
+
+  return { mockFrom };
+});
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     auth: {
       getUser: () =>
         Promise.resolve({
-          data: { user: mockAuthUser },
-          error: mockAuthError,
+          data: { user: mockState.user },
+          error: mockState.authError,
         }),
     },
     from: mockFrom,
@@ -220,10 +226,10 @@ describe("adaptRowToSessionTask", () => {
 
 describe("fetchSessionTasks", () => {
   beforeEach(() => {
-    mockAuthUser = { id: "user-1" };
-    mockAuthError = null;
-    mockQueryData = [];
-    mockQueryError = null;
+    mockState.user = { id: "user-1" };
+    mockState.authError = null;
+    mockState.queryData = [];
+    mockState.queryError = null;
     vi.clearAllMocks();
   });
 
@@ -233,20 +239,20 @@ describe("fetchSessionTasks", () => {
   }
 
   it("16. rejeita quando usuário não autenticado", async () => {
-    mockAuthUser = null;
+    mockState.user = null;
     const { fetchSessionTasks } = await importService();
     await expect(fetchSessionTasks("plan-1")).rejects.toThrow("Usuário não autenticado");
   });
 
   it("17. retorna array vazio quando não há tarefas", async () => {
-    mockQueryData = [];
+    mockState.queryData = [];
     const { fetchSessionTasks } = await importService();
     const result = await fetchSessionTasks("plan-1");
     expect(result).toEqual([]);
   });
 
   it("18. adapta e retorna tarefas do banco", async () => {
-    mockQueryData = [
+    mockState.queryData = [
       makeRow({ id: "t1", priority_score: 9 }),
       makeRow({ id: "t2", priority_score: 5, source: "review_engine", activity: "revisao" }),
     ];
@@ -259,7 +265,7 @@ describe("fetchSessionTasks", () => {
   });
 
   it("19. propaga erro do Supabase", async () => {
-    mockQueryError = new Error("DB error");
+    mockState.queryError = new Error("DB error");
     const { fetchSessionTasks } = await importService();
     await expect(fetchSessionTasks("plan-1")).rejects.toThrow("DB error");
   });
@@ -267,10 +273,10 @@ describe("fetchSessionTasks", () => {
 
 describe("buildStudySession", () => {
   beforeEach(() => {
-    mockAuthUser = { id: "user-1" };
-    mockAuthError = null;
-    mockQueryData = [];
-    mockQueryError = null;
+    mockState.user = { id: "user-1" };
+    mockState.authError = null;
+    mockState.queryData = [];
+    mockState.queryError = null;
     vi.clearAllMocks();
   });
 
@@ -279,7 +285,7 @@ describe("buildStudySession", () => {
   }
 
   it("20. retorna SessionResult com atividades montadas", async () => {
-    mockQueryData = [
+    mockState.queryData = [
       makeRow({ id: "t1", planned_minutes: 50, priority_score: 9 }),
       makeRow({ id: "t2", planned_minutes: 30, priority_score: 6 }),
     ];

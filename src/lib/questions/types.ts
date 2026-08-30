@@ -16,6 +16,11 @@
 
 import type { Difficulty } from "../knowledge/engine";
 import type { KnowledgeStateName } from "../diagnosis/engine";
+import type { ContestMetadata } from "./ingestion";
+
+/** Alias conceitual para metadados de origem da questão (PDF, print, API, edital, etc) */
+export type OriginContext = ContestMetadata;
+export type SourceMetadata = ContestMetadata;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ENUMS ESPELHADOS DO BANCO
@@ -59,6 +64,8 @@ export type QuestionBankItem = {
   contestName: string | null;
   /** ID do concurso vinculado */
   contestId: string | null;
+  /** ID da fonte / prova vinculada */
+  sourceId: string | null;
   /** Ano da prova */
   year: number | null;
   /** ID da matéria */
@@ -77,6 +84,8 @@ export type QuestionBankItem = {
   explanation: string | null;
   /** Se é pública */
   isPublic: boolean;
+  /** Metadados estruturados JSONB (content_hash, cargo, órgão, prova, etc.) */
+  metadata?: Record<string, unknown> | null;
   /** Estatísticas do usuário (null se nunca tentou) */
   stats: QuestionStats | null;
 };
@@ -199,12 +208,22 @@ export type QuestionFilter = {
   topicId?: string | null;
   /** Filtrar por concurso */
   contestId?: string | null;
+  /** Filtrar por fonte / prova */
+  sourceId?: string | null;
   /** Filtrar por banca */
   examBoard?: string | null;
+  /** Filtrar por ano exato */
+  year?: number | null;
   /** Filtrar por ano (mínimo) */
   yearMin?: number | null;
   /** Filtrar por ano (máximo) */
   yearMax?: number | null;
+  /** Filtrar por órgão (ex: Polícia Federal, SEFAZ-SP) */
+  organization?: string | null;
+  /** Filtrar por cargo (ex: Agente de Polícia, Auditor Fiscal) */
+  roleTitle?: string | null;
+  /** Filtrar por dificuldade exata (1-5) */
+  difficulty?: number | null;
   /** Filtrar por dificuldade (mínima, 1-5) */
   difficultyMin?: number | null;
   /** Filtrar por dificuldade (máxima, 1-5) */
@@ -223,6 +242,20 @@ export type QuestionFilter = {
   lastAttemptWrong?: boolean | null;
   /** Filtrar por texto no enunciado */
   searchText?: string | null;
+};
+
+/**
+  Opções dinâmicas de filtro derivadas dos dados reais do banco de questões.
+ */
+export type FilterOptions = {
+  subjects: { id: string; name: string }[];
+  topics: { id: string; name: string; subjectId: string | null }[];
+  examBoards: string[];
+  years: number[];
+  contests: { id: string; name: string; organization?: string | null; roleTitle?: string | null }[];
+  organizations: string[];
+  roles: string[];
+  sources: { id: string; title: string }[];
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

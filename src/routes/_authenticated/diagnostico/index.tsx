@@ -51,7 +51,10 @@ export const Route = createFileRoute("/_authenticated/diagnostico/")({
   component: DiagnosticoPage,
 });
 
-const STATE_BADGE_VARIANT: Record<KnowledgeStateName, "default" | "secondary" | "destructive" | "outline"> = {
+const STATE_BADGE_VARIANT: Record<
+  KnowledgeStateName,
+  "default" | "secondary" | "destructive" | "outline"
+> = {
   SEM_EVIDENCIA: "outline",
   APRENDIZAGEM: "secondary",
   INSTAVEL: "destructive",
@@ -74,7 +77,11 @@ function DiagnosticoPage() {
   const [riskFilter, setRiskFilter] = useState<string>("all");
   const [interventionFilter, setInterventionFilter] = useState<string>("all");
 
-  const { data: diagnoses, isLoading, error } = useQuery({
+  const {
+    data: diagnoses,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["user-diagnoses"],
     queryFn: getUserDiagnoses,
   });
@@ -90,7 +97,9 @@ function DiagnosticoPage() {
   if (error) {
     return (
       <AppShell title="Diagnóstico Inteligente">
-        <p className="text-sm text-destructive">Erro ao carregar diagnóstico: {(error as Error).message}</p>
+        <p className="text-sm text-destructive">
+          Erro ao carregar diagnóstico: {(error as Error).message}
+        </p>
       </AppShell>
     );
   }
@@ -98,9 +107,7 @@ function DiagnosticoPage() {
   const allDiagnoses = diagnoses ?? [];
 
   // Extract unique subjects
-  const subjects = Array.from(
-    new Map(allDiagnoses.map((d) => [d.subjectId, d.subjectName])),
-  );
+  const subjects = Array.from(new Map(allDiagnoses.map((d) => [d.subjectId, d.subjectName])));
 
   // Apply filters
   const filtered = allDiagnoses.filter((d) => {
@@ -125,10 +132,14 @@ function DiagnosticoPage() {
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Pontos críticos</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Pontos críticos
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-semibold text-destructive">{countByState("PONTO_CRITICO")}</p>
+              <p className="text-2xl font-semibold text-destructive">
+                {countByState("PONTO_CRITICO")}
+              </p>
             </CardContent>
           </Card>
           <Card>
@@ -143,7 +154,9 @@ function DiagnosticoPage() {
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Consolidando</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Consolidando
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-2xl font-semibold text-blue-600">{countByState("CONSOLIDANDO")}</p>
@@ -159,10 +172,14 @@ function DiagnosticoPage() {
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Sem evidência</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Sem evidência
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-semibold text-muted-foreground">{countByState("SEM_EVIDENCIA")}</p>
+              <p className="text-2xl font-semibold text-muted-foreground">
+                {countByState("SEM_EVIDENCIA")}
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -278,9 +295,7 @@ function DiagnosticoPage() {
                     <TableCell>
                       <span className="text-xs">{(d.accuracy * 100).toFixed(0)}%</span>
                     </TableCell>
-                    <TableCell className="text-right text-xs">
-                      {d.signals.questionCount}
-                    </TableCell>
+                    <TableCell className="text-right text-xs">{d.signals.questionCount}</TableCell>
                     <TableCell className="text-right text-xs">
                       {d.signals.unresolvedErrors > 0 ? (
                         <Badge variant="destructive" className="text-xs">
@@ -300,12 +315,13 @@ function DiagnosticoPage() {
                       )}
                     </TableCell>
                     <TableCell className="text-xs">
-                      {d.signals.daysSinceStudy !== null
-                        ? `${d.signals.daysSinceStudy}d`
-                        : "—"}
+                      {d.signals.daysSinceStudy !== null ? `${d.signals.daysSinceStudy}d` : "—"}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={STATE_BADGE_VARIANT[d.knowledgeState]} className="text-xs whitespace-nowrap">
+                      <Badge
+                        variant={STATE_BADGE_VARIANT[d.knowledgeState]}
+                        className="text-xs whitespace-nowrap"
+                      >
                         {KNOWLEDGE_STATE_LABELS[d.knowledgeState]}
                       </Badge>
                     </TableCell>

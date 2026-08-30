@@ -40,7 +40,11 @@ export const Route = createFileRoute("/_authenticated/diagnostico/$topicId")({
 function DiagnosticoDetalhePage() {
   const { topicId } = Route.useParams();
 
-  const { data: diagnosis, isLoading: loadingDiagnosis, error: diagError } = useQuery({
+  const {
+    data: diagnosis,
+    isLoading: loadingDiagnosis,
+    error: diagError,
+  } = useQuery({
     queryKey: ["topic-diagnosis", topicId],
     queryFn: () => getTopicDiagnosis(topicId),
   });
@@ -135,7 +139,9 @@ function DiagnosticoDetalhePage() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Desempenho</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Desempenho
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-3">
@@ -150,12 +156,16 @@ function DiagnosticoDetalhePage() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Score de intervenção</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Score de intervenção
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-3">
                 <Progress value={d.interventionScore * 100} className="h-3 flex-1" />
-                <span className="text-lg font-semibold">{(d.interventionScore * 100).toFixed(0)}%</span>
+                <span className="text-lg font-semibold">
+                  {(d.interventionScore * 100).toFixed(0)}%
+                </span>
               </div>
               <p className="text-xs text-muted-foreground mt-1">
                 Quanto maior, mais urgente a intervenção
@@ -178,10 +188,14 @@ function DiagnosticoDetalhePage() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Não resolvidos</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Não resolvidos
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className={`text-lg font-semibold ${d.signals.unresolvedErrors > 0 ? "text-destructive" : ""}`}>
+              <p
+                className={`text-lg font-semibold ${d.signals.unresolvedErrors > 0 ? "text-destructive" : ""}`}
+              >
                 {d.signals.unresolvedErrors}
               </p>
             </CardContent>
@@ -189,10 +203,14 @@ function DiagnosticoDetalhePage() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Recorrentes</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Recorrentes
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className={`text-lg font-semibold ${d.signals.recurringErrors > 0 ? "text-orange-600" : ""}`}>
+              <p
+                className={`text-lg font-semibold ${d.signals.recurringErrors > 0 ? "text-orange-600" : ""}`}
+              >
                 {d.signals.recurringErrors}
               </p>
             </CardContent>
@@ -220,21 +238,35 @@ function DiagnosticoDetalhePage() {
           <div className="flex flex-wrap gap-3">
             <div className="space-y-1">
               <p className="text-xs text-muted-foreground">Estado</p>
-              <Badge variant={d.knowledgeState === "DOMINADO" || d.knowledgeState === "CONSOLIDANDO" ? "default" : d.knowledgeState === "SEM_EVIDENCIA" || d.knowledgeState === "APRENDIZAGEM" ? "secondary" : "destructive"}>
+              <Badge
+                variant={
+                  d.knowledgeState === "DOMINADO" || d.knowledgeState === "CONSOLIDANDO"
+                    ? "default"
+                    : d.knowledgeState === "SEM_EVIDENCIA" || d.knowledgeState === "APRENDIZAGEM"
+                      ? "secondary"
+                      : "destructive"
+                }
+              >
                 {KNOWLEDGE_STATE_LABELS[d.knowledgeState]}
               </Badge>
             </div>
             <div className="space-y-1">
               <p className="text-xs text-muted-foreground">Risco</p>
-              <Badge variant={d.riskLevel === "BAIXO" ? "outline" : d.riskLevel === "MODERADO" ? "secondary" : "destructive"}>
+              <Badge
+                variant={
+                  d.riskLevel === "BAIXO"
+                    ? "outline"
+                    : d.riskLevel === "MODERADO"
+                      ? "secondary"
+                      : "destructive"
+                }
+              >
                 {RISK_LEVEL_LABELS[d.riskLevel]}
               </Badge>
             </div>
             <div className="space-y-1">
               <p className="text-xs text-muted-foreground">Intervenção recomendada</p>
-              <Badge variant="secondary">
-                {INTERVENTION_LABELS[d.intervention]}
-              </Badge>
+              <Badge variant="secondary">{INTERVENTION_LABELS[d.intervention]}</Badge>
             </div>
           </div>
 

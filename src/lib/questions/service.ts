@@ -40,6 +40,7 @@ import type {
   QuestionSetType,
   QuestionOrigin,
   QuestionNovelty,
+  FilterOptions,
 } from "./types";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -55,6 +56,7 @@ type QuestionRow = {
   exam_board: string | null;
   contest_name: string | null;
   contest_id: string | null;
+  source_id: string | null;
   year: number | null;
   subject_id: string | null;
   topic_id: string | null;
@@ -64,6 +66,7 @@ type QuestionRow = {
   tags: string[];
   explanation: string | null;
   is_public: boolean;
+  metadata?: Record<string, unknown> | null;
 };
 
 type StatsRow = {
@@ -153,6 +156,7 @@ export function toQuestionBankItem(
     examBoard: row.exam_board,
     contestName: row.contest_name,
     contestId: row.contest_id,
+    sourceId: row.source_id,
     year: row.year,
     subjectId: row.subject_id,
     topicId: row.topic_id,
@@ -162,6 +166,7 @@ export function toQuestionBankItem(
     tags: Array.isArray(row.tags) ? row.tags : [],
     explanation: row.explanation,
     isPublic: row.is_public,
+    metadata: (row.metadata as Record<string, unknown> | undefined) ?? null,
     stats,
   };
 }
@@ -227,7 +232,7 @@ async function requireUserFromClient(client: SupabaseClient): Promise<string> {
 }
 
 const QUESTION_SELECT =
-  "id, statement, alternatives, correct_answer, is_true_false, exam_board, contest_name, contest_id, year, subject_id, topic_id, difficulty, origin, novelty, tags, explanation, is_public";
+  "id, statement, alternatives, correct_answer, is_true_false, exam_board, contest_name, contest_id, source_id, year, subject_id, topic_id, difficulty, origin, novelty, tags, explanation, is_public, metadata";
 
 const STATS_SELECT =
   "question_id, total_attempts, correct_count, wrong_count, streak_correct, streak_wrong, best_time_seconds, avg_time_seconds, last_attempted_at, last_correct_at, last_wrong_at";
@@ -258,14 +263,23 @@ export function buildSupabaseFilters(
   if (filter.contestId != null) {
     q = q.eq("contest_id", filter.contestId);
   }
-  if (filter.examBoard != null) {
+  if (filter.sourceId != null) {
+    q = q.eq("source_id", filter.sourceId);
+  }
+  if (filter.examBoard != null && filter.examBoard.trim() !== "") {
     q = q.eq("exam_board", filter.examBoard);
+  }
+  if (filter.year != null) {
+    q = q.eq("year", filter.year);
   }
   if (filter.yearMin != null) {
     q = q.gte("year", filter.yearMin);
   }
   if (filter.yearMax != null) {
     q = q.lte("year", filter.yearMax);
+  }
+  if (filter.difficulty != null) {
+    q = q.eq("difficulty", filter.difficulty);
   }
   if (filter.difficultyMin != null) {
     q = q.gte("difficulty", filter.difficultyMin);
@@ -279,11 +293,112 @@ export function buildSupabaseFilters(
   if (filter.isTrueFalse != null) {
     q = q.eq("is_true_false", filter.isTrueFalse);
   }
+  if (filter.organization != null && filter.organization.trim() !== "") {
+    q = q.filter("metadata->>organization", "eq", filter.organization);
+  }
+  if (filter.roleTitle != null && filter.roleTitle.trim() !== "") {
+    // metadata->>position ou metadata->>role_title
+    q = q.filter("metadata->>position", "eq", filter.roleTitle);
+  }
   if (filter.tags != null && filter.tags.length > 0) {
     q = q.overlaps("tags", filter.tags);
   }
 
   return q;
+}
+
+/**
+ * Busca opções dinâmicas de filtros derivadas dos dados reais existentes no banco.
+ * Permite contextualizar os tópicos, bancas, anos e concursos com base nas seleções ativas.
+ */
+export async function fetchAvailableFilterOptions(
+  activeFilters: QuestionFilter = {},
+): Promise<FilterOptions> {
+  await requireUser();
+
+  const [subjectsRes, topicsRes, contestsRes, sourcesRes] = await Promise.all([
+    supabase.from("subjects").select("id, name").order("name"),
+    supabase.from("topics").select("id, name, subject_id").order("name"),
+    supabase
+      .from("contests")
+      .select("id, name, organization, role_title, exam_board")
+      .order("name"),
+    supabase.from("sources").select("id, title").order("title"),
+  ]);
+
+  const subjects = (subjectsRes.data ?? []).map((s) => ({ id: s.id, name: s.name }));
+  let topics = (topicsRes.data ?? []).map((t) => ({
+    id: t.id,
+    name: t.name,
+    subjectId: t.subject_id,
+  }));
+
+  if (activeFilters.subjectId) {
+    topics = topics.filter((t) => t.subjectId === activeFilters.subjectId);
+  }
+
+  const contests = (contestsRes.data ?? []).map((c) => ({
+    id: c.id,
+    name: c.name,
+    organization: c.organization,
+    roleTitle: c.role_title,
+  }));
+  const sources = (sourcesRes.data ?? []).map((s) => ({ id: s.id, title: s.title }));
+
+  // Buscar metadados de questões para compor opções únicas dinâmicas
+  let qQuery = supabase
+    .from("questions")
+    .select("exam_board, year, metadata, contest_id, source_id, subject_id, topic_id");
+
+  if (activeFilters.subjectId) qQuery = qQuery.eq("subject_id", activeFilters.subjectId);
+
+  const { data: questionsData } = await qQuery;
+
+  const examBoardsSet = new Set<string>();
+  const yearsSet = new Set<number>();
+  const orgsSet = new Set<string>();
+  const rolesSet = new Set<string>();
+
+  contests.forEach((c) => {
+    if (c.organization?.trim()) orgsSet.add(c.organization.trim());
+    if (c.roleTitle?.trim()) rolesSet.add(c.roleTitle.trim());
+    if (c.exam_board?.trim()) examBoardsSet.add(c.exam_board.trim());
+  });
+
+  (questionsData ?? []).forEach((q) => {
+    if (q.exam_board?.trim()) {
+      examBoardsSet.add(q.exam_board.trim());
+    }
+    if (q.year != null && typeof q.year === "number" && q.year > 1900) {
+      yearsSet.add(q.year);
+    }
+    const meta = q.metadata as Record<string, unknown> | null;
+    if (meta?.organization && typeof meta.organization === "string" && meta.organization.trim()) {
+      orgsSet.add(meta.organization.trim());
+    }
+    if (meta?.position && typeof meta.position === "string" && meta.position.trim()) {
+      rolesSet.add(meta.position.trim());
+    }
+    if (meta?.role_title && typeof meta.role_title === "string" && meta.role_title.trim()) {
+      rolesSet.add(meta.role_title.trim());
+    }
+  });
+
+  const examBoards = Array.from(examBoardsSet).sort();
+  const years = Array.from(yearsSet).sort((a, b) => b - a);
+  const organizations = Array.from(orgsSet).sort();
+  const roles = Array.from(rolesSet).sort();
+
+  return {
+    subjects,
+    topics,
+    examBoards,
+    years,
+    contests,
+    organizations,
+    roles,
+    sources,
+  };
 }
 
 /**

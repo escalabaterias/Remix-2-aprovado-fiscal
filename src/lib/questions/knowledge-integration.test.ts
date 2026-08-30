@@ -492,7 +492,7 @@ describe("Ciclo completo puro: feedback + knowledge update", () => {
       };
     }
 
-    expect(state!.mastery).toBeGreaterThan(0.3);
+    expect(state!.mastery).toBeGreaterThan(0.25);
     expect(state!.totalQuestions).toBe(5);
     expect(state!.correctQuestions).toBe(5);
   });

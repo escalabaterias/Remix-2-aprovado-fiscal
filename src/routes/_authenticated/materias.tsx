@@ -41,7 +41,8 @@ export const Route = createFileRoute("/_authenticated/materias")({
       { property: "og:title", content: "Matérias e Tópicos — Aprovado Fiscal" },
       {
         property: "og:description",
-        content: "Base de conhecimento independente de concurso: matérias, tópicos e pré-requisitos.",
+        content:
+          "Base de conhecimento independente de concurso: matérias, tópicos e pré-requisitos.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -119,10 +120,7 @@ function SubjectsPage() {
   });
 
   const tree = useMemo(() => buildTree(topics ?? []), [topics]);
-  const topicName = useMemo(
-    () => new Map((topics ?? []).map((t) => [t.id, t.name])),
-    [topics],
-  );
+  const topicName = useMemo(() => new Map((topics ?? []).map((t) => [t.id, t.name])), [topics]);
 
   const createSubject = useMutation({
     mutationFn: async (payload: { name: string; area: string; is_quantitative: boolean }) => {
@@ -336,9 +334,7 @@ function NewSubjectDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Nova matéria</DialogTitle>
-          <DialogDescription>
-            Matérias são globais e independentes de concurso.
-          </DialogDescription>
+          <DialogDescription>Matérias são globais e independentes de concurso.</DialogDescription>
         </DialogHeader>
         <form
           className="space-y-4"
@@ -425,7 +421,12 @@ function NewTopicDialog({
         >
           <div className="space-y-2">
             <Label htmlFor="topic-name">Nome</Label>
-            <Input id="topic-name" value={name} onChange={(e) => setName(e.target.value)} required />
+            <Input
+              id="topic-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="topic-parent">Tópico pai</Label>

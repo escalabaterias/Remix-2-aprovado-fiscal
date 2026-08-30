@@ -47,7 +47,5 @@ export async function hashInput(input: unknown): Promise<string> {
  * então despachar o processamento para a server function correspondente.
  */
 export async function runAiTask<T = unknown>(_task: AiTask): Promise<AiResult<T>> {
-  throw new Error(
-    "Camada de IA ainda não implementada. Estrutura preparada para a próxima etapa.",
-  );
+  throw new Error("Camada de IA ainda não implementada. Estrutura preparada para a próxima etapa.");
 }

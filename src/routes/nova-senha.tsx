@@ -14,7 +14,10 @@ export const Route = createFileRoute("/nova-senha")({
       { title: "Definir nova senha — Aprovado Fiscal" },
       { name: "description", content: "Defina uma nova senha para sua conta do Aprovado Fiscal." },
       { property: "og:title", content: "Definir nova senha — Aprovado Fiscal" },
-      { property: "og:description", content: "Redefinição de senha da plataforma Aprovado Fiscal." },
+      {
+        property: "og:description",
+        content: "Redefinição de senha da plataforma Aprovado Fiscal.",
+      },
       { name: "robots", content: "noindex" },
     ],
   }),

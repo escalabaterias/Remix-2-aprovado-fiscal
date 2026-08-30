@@ -126,7 +126,7 @@ describe("planner — core", () => {
 
   it("redistributes overdue tasks without piling on one day", () => {
     const weeks = new Map([
-      [w1, week(w1, 5)],
+      [w1, week(w1, 3)],
       [w2, week(w2, 3)],
     ]);
     const pending = Array.from({ length: 6 }, (_, i) => ({
@@ -807,10 +807,7 @@ describe("planner — diagnostic integration (Etapa 3.3)", () => {
   const w1 = weekStartOf(todayISO());
 
   it("diagnostic data increases score for critical topics", () => {
-    const candidates = [
-      mk(1, "S1", 3, 0.3),
-      mk(2, "S2", 3, 0.3),
-    ];
+    const candidates = [mk(1, "S1", 3, 0.3), mk(2, "S2", 3, 0.3)];
 
     const diagnosticData = new Map<string, DiagnosticData>([
       [
@@ -875,11 +872,7 @@ describe("planner — diagnostic integration (Etapa 3.3)", () => {
   });
 
   it("buildPlan propagates diagnostic data correctly", () => {
-    const candidates = [
-      mk(1, "S1", 3, 0.3),
-      mk(2, "S2", 3, 0.3),
-      mk(3, "S3", 3, 0.3),
-    ];
+    const candidates = [mk(1, "S1", 3, 0.3), mk(2, "S2", 3, 0.3), mk(3, "S3", 3, 0.3)];
     const diagnosticData = new Map<string, DiagnosticData>([
       [
         "t1",

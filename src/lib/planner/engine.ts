@@ -361,7 +361,7 @@ export function chooseActivity(
     return indexForCandidate % 2 === 0 ? "questoes" : "flashcards";
   }
   if (c.gap >= 0.7 && !c.isStudied) {
-    return indexForCandidate === 0 ? "teoria" : "questoes";
+    return indexForCandidate % 2 === 0 ? "teoria" : "questoes";
   }
   if (c.isStudied) {
     return indexForCandidate % 3 === 2 ? "flashcards" : "questoes";

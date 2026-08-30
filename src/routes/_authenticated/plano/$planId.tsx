@@ -254,7 +254,9 @@ function PlanDetailPage() {
                     </div>
                     <Progress
                       className="mt-1.5"
-                      value={entry.planned ? Math.min(100, (entry.realized / entry.planned) * 100) : 0}
+                      value={
+                        entry.planned ? Math.min(100, (entry.realized / entry.planned) * 100) : 0
+                      }
                     />
                   </div>
                 ))}
@@ -282,7 +284,9 @@ function PlanDetailPage() {
                 <section key={date} className="panel px-5 py-4">
                   <div className="flex items-center justify-between">
                     <h2 className="font-display text-sm font-semibold">
-                      {date === "sem-data" ? "Sem data (aguardando disponibilidade)" : formatDateShort(date)}
+                      {date === "sem-data"
+                        ? "Sem data (aguardando disponibilidade)"
+                        : formatDateShort(date)}
                     </h2>
                     <span className="text-xs text-muted-foreground">
                       {formatHours(dayTasks.reduce((s, t) => s + (t.planned_minutes ?? 0), 0))}{" "}
@@ -299,8 +303,8 @@ function PlanDetailPage() {
                           <div className="min-w-0">
                             <p className="truncate font-medium">{task.title}</p>
                             <p className="mt-0.5 text-xs text-muted-foreground">
-                              {task.activity_type ? ACTIVITY_LABELS[task.activity_type] : "Estudo"} ·{" "}
-                              {task.planned_minutes ?? 0} min
+                              {task.activity_type ? ACTIVITY_LABELS[task.activity_type] : "Estudo"}{" "}
+                              · {task.planned_minutes ?? 0} min
                               {task.actual_minutes !== null
                                 ? ` · líquido ${task.actual_minutes} min`
                                 : ""}

@@ -262,7 +262,7 @@ function sha256Pure(str: string): string {
 
   const mathPow = Math.pow;
   const maxWord = mathPow(2, 32);
-  let lengthProperty = "length";
+  const lengthProperty = "length";
   let i: number, j: number;
   let result = "";
 

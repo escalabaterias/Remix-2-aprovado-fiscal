@@ -2,18 +2,21 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useMemo, useCallback } from "react";
 import { toast } from "sonner";
+import { RotateCcw, Filter } from "lucide-react";
 
-import { fetchQuestions, type FetchQuestionsOptions } from "@/lib/questions/service";
+import {
+  fetchQuestions,
+  fetchAvailableFilterOptions,
+  type FetchQuestionsOptions,
+} from "@/lib/questions/service";
 import { submitAnswer, type SubmitAnswerInput } from "@/lib/questions/attempt-service";
 import { normalizeTrueFalseAnswer } from "@/lib/questions/engine";
-import type { QuestionBankItem, QuestionFilter } from "@/lib/questions/types";
-import { supabase } from "@/integrations/supabase/client";
+import type { QuestionBankItem, QuestionFilter, FilterOptions } from "@/lib/questions/types";
 import { AppShell } from "@/components/layout/AppShell";
 import { EmptyState } from "@/components/common/EmptyState";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
@@ -26,13 +29,26 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 export const Route = createFileRoute("/_authenticated/questoes/")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    subject: typeof search.subject === "string" ? search.subject : undefined,
+    topic: typeof search.topic === "string" ? search.topic : undefined,
+    board: typeof search.board === "string" ? search.board : undefined,
+    year: typeof search.year === "string" ? search.year : undefined,
+    contest: typeof search.contest === "string" ? search.contest : undefined,
+    organization: typeof search.organization === "string" ? search.organization : undefined,
+    role: typeof search.role === "string" ? search.role : undefined,
+    type: typeof search.type === "string" ? search.type : undefined,
+    difficulty: typeof search.difficulty === "string" ? search.difficulty : undefined,
+    source: typeof search.source === "string" ? search.source : undefined,
+    tags: typeof search.tags === "string" ? search.tags : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Banco de Questões — Aprovado Fiscal" },
       {
         name: "description",
         content:
-          "Resolva questões filtradas por matéria, tópico, banca, ano e dificuldade com feedback imediato.",
+          "Resolva questões filtradas por matéria, tópico, banca, ano, concurso, órgão, cargo e dificuldade com feedback imediato.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -85,32 +101,14 @@ function accuracyPercent(accuracy: number): string {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// HOOK: opções de filtro (matérias, tópicos)
+// HOOK: opções de filtro dinâmicas
 // ─────────────────────────────────────────────────────────────────────────────
 
-type SubjectOption = { id: string; name: string };
-type TopicOption = { id: string; name: string; subjectId: string | null };
-
-function useFilterOptions() {
-  return useQuery({
-    queryKey: ["questoes-filter-options"],
-    staleTime: 5 * 60_000,
-    queryFn: async () => {
-      const [subjectsRes, topicsRes] = await Promise.all([
-        supabase.from("subjects").select("id, name").order("name"),
-        supabase.from("topics").select("id, name, subject_id").order("name"),
-      ]);
-      const subjects: SubjectOption[] = (subjectsRes.data ?? []).map((s) => ({
-        id: s.id,
-        name: s.name,
-      }));
-      const topics: TopicOption[] = (topicsRes.data ?? []).map((t) => ({
-        id: t.id,
-        name: t.name,
-        subjectId: t.subject_id,
-      }));
-      return { subjects, topics };
-    },
+function useFilterOptions(activeFilters: QuestionFilter) {
+  return useQuery<FilterOptions>({
+    queryKey: ["questoes-filter-options", activeFilters.subjectId],
+    staleTime: 60_000,
+    queryFn: () => fetchAvailableFilterOptions(activeFilters),
   });
 }
 
@@ -120,14 +118,48 @@ function useFilterOptions() {
 
 function QuestoesPage() {
   const queryClient = useQueryClient();
+  const searchParams = Route.useSearch();
+  const navigate = Route.useNavigate();
 
-  // Filtros
-  const [subjectFilter, setSubjectFilter] = useState<string>("all");
-  const [topicFilter, setTopicFilter] = useState<string>("all");
-  const [examBoardFilter, setExamBoardFilter] = useState<string>("");
-  const [yearFilter, setYearFilter] = useState<string>("");
-  const [difficultyFilter, setDifficultyFilter] = useState<string>("all");
-  const [tagFilter, setTagFilter] = useState<string>("");
+  // Filtros derivados dos search params da URL (com fallback "all")
+  const subjectFilter = searchParams.subject ?? "all";
+  const topicFilter = searchParams.topic ?? "all";
+  const examBoardFilter = searchParams.board ?? "all";
+  const yearFilter = searchParams.year ?? "all";
+  const contestFilter = searchParams.contest ?? "all";
+  const orgFilter = searchParams.organization ?? "all";
+  const roleFilter = searchParams.role ?? "all";
+  const typeFilter = searchParams.type ?? "all";
+  const difficultyFilter = searchParams.difficulty ?? "all";
+  const sourceFilter = searchParams.source ?? "all";
+  const tagFilter = searchParams.tags ?? "";
+
+  // Função para atualizar 1 filtro na URL
+  const setFilterParam = useCallback(
+    (key: string, value: string) => {
+      navigate({
+        search: (prev: Record<string, any>) => {
+          const next = { ...prev };
+          if (!value || value === "all") {
+            delete next[key];
+          } else {
+            next[key] = value;
+          }
+          // Resetar tópico se alterar a matéria
+          if (key === "subject") {
+            delete next["topic"];
+          }
+          return next;
+        },
+        replace: true,
+      });
+    },
+    [navigate],
+  );
+
+  const handleClearFilters = useCallback(() => {
+    navigate({ search: {}, replace: true });
+  }, [navigate]);
 
   // Questão aberta
   const [openQuestion, setOpenQuestion] = useState<QuestionBankItem | null>(null);
@@ -142,28 +174,26 @@ function QuestoesPage() {
   // IDs já respondidos nesta sessão de navegação
   const [answeredIds, setAnsweredIds] = useState<Set<string>>(new Set());
 
-  const { data: filterOptions } = useFilterOptions();
-
-  // Montar filtro
+  // Objeto QuestionFilter
   const questionFilter: QuestionFilter = useMemo(() => {
     const f: QuestionFilter = {};
     if (subjectFilter !== "all") f.subjectId = subjectFilter;
     if (topicFilter !== "all") f.topicId = topicFilter;
-    if (examBoardFilter.trim()) f.examBoard = examBoardFilter.trim();
-    if (yearFilter.trim()) {
+    if (examBoardFilter !== "all" && examBoardFilter.trim()) f.examBoard = examBoardFilter;
+    if (yearFilter !== "all" && yearFilter.trim()) {
       const y = parseInt(yearFilter.trim(), 10);
-      if (Number.isFinite(y)) {
-        f.yearMin = y;
-        f.yearMax = y;
-      }
+      if (Number.isFinite(y)) f.year = y;
     }
+    if (contestFilter !== "all" && contestFilter.trim()) f.contestId = contestFilter;
+    if (orgFilter !== "all" && orgFilter.trim()) f.organization = orgFilter;
+    if (roleFilter !== "all" && roleFilter.trim()) f.roleTitle = roleFilter;
+    if (typeFilter === "true_false") f.isTrueFalse = true;
+    if (typeFilter === "multiple_choice") f.isTrueFalse = false;
     if (difficultyFilter !== "all") {
       const d = parseInt(difficultyFilter, 10);
-      if (Number.isFinite(d)) {
-        f.difficultyMin = d;
-        f.difficultyMax = d;
-      }
+      if (Number.isFinite(d)) f.difficulty = d;
     }
+    if (sourceFilter !== "all" && sourceFilter.trim()) f.sourceId = sourceFilter;
     if (tagFilter.trim()) {
       f.tags = tagFilter
         .split(",")
@@ -171,7 +201,21 @@ function QuestoesPage() {
         .filter(Boolean);
     }
     return f;
-  }, [subjectFilter, topicFilter, examBoardFilter, yearFilter, difficultyFilter, tagFilter]);
+  }, [
+    subjectFilter,
+    topicFilter,
+    examBoardFilter,
+    yearFilter,
+    contestFilter,
+    orgFilter,
+    roleFilter,
+    typeFilter,
+    difficultyFilter,
+    sourceFilter,
+    tagFilter,
+  ]);
+
+  const { data: filterOptions } = useFilterOptions(questionFilter);
 
   const fetchOpts: FetchQuestionsOptions = useMemo(
     () => ({ filter: questionFilter, limit: 200 }),
@@ -193,6 +237,11 @@ function QuestoesPage() {
     if (subjectFilter === "all") return filterOptions.topics;
     return filterOptions.topics.filter((t) => t.subjectId === subjectFilter);
   }, [filterOptions, subjectFilter]);
+
+  // Contagem de filtros ativos
+  const activeFilterCount = useMemo(() => {
+    return Object.keys(questionFilter).length;
+  }, [questionFilter]);
 
   // Submeter resposta
   const submitMutation = useMutation({
@@ -236,12 +285,11 @@ function QuestoesPage() {
     (q: QuestionBankItem) => {
       setOpenQuestion(q);
       setSelectedAnswer("");
-      // Se já respondeu nesta sessão, restaurar estado
       if (answeredIds.has(q.questionId)) {
         setSubmittedResult({
-          isCorrect: false, // placeholder — será recalculado na UI pela badge da lista
+          isCorrect: false,
           correctAnswer: q.correctAnswer,
-          feedback: null as any, // indicar que veio do cache local
+          feedback: null as any,
           explanation: q.explanation,
         });
       } else {
@@ -314,180 +362,316 @@ function QuestoesPage() {
   return (
     <AppShell
       title="Banco de Questões"
-      description="Resolva questões com feedback imediato. Filtre por matéria, tópico, banca, ano ou dificuldade."
+      description="Filtre e resolva questões com metadados completos de Banca, Ano, Órgão, Cargo, Concurso e Matéria."
     >
       <div className="space-y-6">
-        {/* Filtros */}
-        <div className="flex flex-wrap gap-3">
-          <Select
-            value={subjectFilter}
-            onValueChange={(v) => {
-              setSubjectFilter(v);
-              setTopicFilter("all");
-            }}
-          >
-            <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Matéria" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todas as matérias</SelectItem>
-              {(filterOptions?.subjects ?? []).map((s) => (
-                <SelectItem key={s.id} value={s.id}>
-                  {s.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select value={topicFilter} onValueChange={setTopicFilter}>
-            <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Tópico" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos os tópicos</SelectItem>
-              {filteredTopicOptions.map((t) => (
-                <SelectItem key={t.id} value={t.id}>
-                  {t.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <div className="flex items-end gap-1">
-            <div className="space-y-1">
-              <Label htmlFor="examBoard" className="text-xs text-muted-foreground">
-                Banca
-              </Label>
-              <Input
-                id="examBoard"
-                className="w-[140px]"
-                placeholder="Ex: CESPE"
-                value={examBoardFilter}
-                onChange={(e) => setExamBoardFilter(e.target.value)}
-              />
+        {/* Painel de Filtros Avançados */}
+        <Card className="border-border/60 bg-card/40 backdrop-blur-xs">
+          <CardHeader className="pb-3 pt-4 px-4 flex flex-row items-center justify-between space-y-0">
+            <div className="flex items-center gap-2">
+              <Filter className="h-4 w-4 text-primary" />
+              <CardTitle className="text-sm font-semibold">Filtros Avançados</CardTitle>
+              {activeFilterCount > 0 && (
+                <Badge variant="secondary" className="text-xs px-2 py-0.5">
+                  {activeFilterCount} ativo(s)
+                </Badge>
+              )}
             </div>
-          </div>
 
-          <div className="flex items-end gap-1">
-            <div className="space-y-1">
-              <Label htmlFor="year" className="text-xs text-muted-foreground">
-                Ano
-              </Label>
-              <Input
-                id="year"
-                className="w-[100px]"
-                placeholder="Ex: 2024"
-                value={yearFilter}
-                onChange={(e) => setYearFilter(e.target.value)}
-              />
+            {activeFilterCount > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleClearFilters}
+                className="h-8 text-xs text-muted-foreground hover:text-foreground gap-1.5"
+              >
+                <RotateCcw className="h-3.5 w-3.5" />
+                Limpar filtros
+              </Button>
+            )}
+          </CardHeader>
+
+          <CardContent className="px-4 pb-4 space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {/* 1. MATÉRIA */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-muted-foreground">Matéria</Label>
+                <Select value={subjectFilter} onValueChange={(v) => setFilterParam("subject", v)}>
+                  <SelectTrigger className="w-full text-xs h-9">
+                    <SelectValue placeholder="Todas as matérias" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas as matérias</SelectItem>
+                    {(filterOptions?.subjects ?? []).map((s) => (
+                      <SelectItem key={s.id} value={s.id}>
+                        {s.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 2. TÓPICO (dependente de matéria) */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-muted-foreground">Tópico</Label>
+                <Select value={topicFilter} onValueChange={(v) => setFilterParam("topic", v)}>
+                  <SelectTrigger className="w-full text-xs h-9">
+                    <SelectValue placeholder="Todos os tópicos" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os tópicos</SelectItem>
+                    {filteredTopicOptions.map((t) => (
+                      <SelectItem key={t.id} value={t.id}>
+                        {t.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 3. BANCA */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-muted-foreground">Banca</Label>
+                <Select value={examBoardFilter} onValueChange={(v) => setFilterParam("board", v)}>
+                  <SelectTrigger className="w-full text-xs h-9">
+                    <SelectValue placeholder="Todas as bancas" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas as bancas</SelectItem>
+                    {(filterOptions?.examBoards ?? []).map((b) => (
+                      <SelectItem key={b} value={b}>
+                        {b}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 4. ANO */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-muted-foreground">Ano</Label>
+                <Select value={yearFilter} onValueChange={(v) => setFilterParam("year", v)}>
+                  <SelectTrigger className="w-full text-xs h-9">
+                    <SelectValue placeholder="Todos os anos" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os anos</SelectItem>
+                    {(filterOptions?.years ?? []).map((y) => (
+                      <SelectItem key={y} value={String(y)}>
+                        {y}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 5. CONCURSO */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-muted-foreground">Concurso</Label>
+                <Select value={contestFilter} onValueChange={(v) => setFilterParam("contest", v)}>
+                  <SelectTrigger className="w-full text-xs h-9">
+                    <SelectValue placeholder="Todos os concursos" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os concursos</SelectItem>
+                    {(filterOptions?.contests ?? []).map((c) => (
+                      <SelectItem key={c.id} value={c.id}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 6. ÓRGÃO */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-muted-foreground">Órgão</Label>
+                <Select value={orgFilter} onValueChange={(v) => setFilterParam("organization", v)}>
+                  <SelectTrigger className="w-full text-xs h-9">
+                    <SelectValue placeholder="Todos os órgãos" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os órgãos</SelectItem>
+                    {(filterOptions?.organizations ?? []).map((org) => (
+                      <SelectItem key={org} value={org}>
+                        {org}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 7. CARGO */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-muted-foreground">Cargo</Label>
+                <Select value={roleFilter} onValueChange={(v) => setFilterParam("role", v)}>
+                  <SelectTrigger className="w-full text-xs h-9">
+                    <SelectValue placeholder="Todos os cargos" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os cargos</SelectItem>
+                    {(filterOptions?.roles ?? []).map((role) => (
+                      <SelectItem key={role} value={role}>
+                        {role}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 8. TIPO DE QUESTÃO */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-muted-foreground">Tipo de Questão</Label>
+                <Select value={typeFilter} onValueChange={(v) => setFilterParam("type", v)}>
+                  <SelectTrigger className="w-full text-xs h-9">
+                    <SelectValue placeholder="Todos os tipos" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os tipos</SelectItem>
+                    <SelectItem value="multiple_choice">Múltipla Escolha</SelectItem>
+                    <SelectItem value="true_false">Certo / Errado</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 9. DIFICULDADE */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-muted-foreground">Dificuldade</Label>
+                <Select
+                  value={difficultyFilter}
+                  onValueChange={(v) => setFilterParam("difficulty", v)}
+                >
+                  <SelectTrigger className="w-full text-xs h-9">
+                    <SelectValue placeholder="Todas as dificuldades" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas</SelectItem>
+                    <SelectItem value="1">1 — Muito fácil</SelectItem>
+                    <SelectItem value="2">2 — Fácil</SelectItem>
+                    <SelectItem value="3">3 — Média</SelectItem>
+                    <SelectItem value="4">4 — Difícil</SelectItem>
+                    <SelectItem value="5">5 — Muito difícil</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 10. FONTE / PROVA */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-muted-foreground">Fonte / Prova</Label>
+                <Select value={sourceFilter} onValueChange={(v) => setFilterParam("source", v)}>
+                  <SelectTrigger className="w-full text-xs h-9">
+                    <SelectValue placeholder="Todas as fontes" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas as fontes</SelectItem>
+                    {(filterOptions?.sources ?? []).map((s) => (
+                      <SelectItem key={s.id} value={s.id}>
+                        {s.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-          </div>
+          </CardContent>
+        </Card>
 
-          <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
-            <SelectTrigger className="w-[160px]">
-              <SelectValue placeholder="Dificuldade" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todas</SelectItem>
-              <SelectItem value="1">1 — Muito fácil</SelectItem>
-              <SelectItem value="2">2 — Fácil</SelectItem>
-              <SelectItem value="3">3 — Média</SelectItem>
-              <SelectItem value="4">4 — Difícil</SelectItem>
-              <SelectItem value="5">5 — Muito difícil</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <div className="flex items-end gap-1">
-            <div className="space-y-1">
-              <Label htmlFor="tags" className="text-xs text-muted-foreground">
-                Tags
-              </Label>
-              <Input
-                id="tags"
-                className="w-[180px]"
-                placeholder="tag1, tag2"
-                value={tagFilter}
-                onChange={(e) => setTagFilter(e.target.value)}
-              />
-            </div>
-          </div>
+        {/* Resumo da Busca */}
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-medium text-muted-foreground">
+            {questions?.length ?? 0} questão(ões) encontrada(s)
+          </p>
         </div>
-
-        <Separator />
-
-        {/* Resumo */}
-        <p className="text-sm text-muted-foreground">
-          {questions?.length ?? 0} questão(ões) encontrada(s)
-        </p>
 
         {/* Lista de questões */}
         {!questions || questions.length === 0 ? (
           <EmptyState
             title="Nenhuma questão encontrada"
-            description="Não há questões no banco para os filtros selecionados. Ajuste os filtros ou adicione questões ao banco."
+            description="Não há questões no banco que satisfaçam a combinação dos filtros selecionados. Tente ajustar ou limpar os filtros."
           />
         ) : (
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {questions.map((q, idx) => {
               const alts = parseAlternatives(q.alternatives);
               const wasAnswered = answeredIds.has(q.questionId);
+              const metadataOrg =
+                (q.metadata?.organization as string) || q.contest?.organization || null;
+              const metadataRole =
+                (q.metadata?.position as string) ||
+                (q.metadata?.role_title as string) ||
+                q.contest?.roleTitle ||
+                null;
+              const qNum = (q.metadata?.question_number as string | number) || null;
+
               return (
                 <li key={q.questionId}>
                   <button
                     type="button"
                     onClick={() => handleOpenQuestion(q)}
-                    className="w-full rounded-md border border-border px-4 py-3 text-left transition-colors hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="w-full rounded-lg border border-border/70 bg-card p-4 text-left transition-all hover:border-primary/40 hover:bg-muted/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <div className="flex flex-wrap items-start justify-between gap-2">
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs text-muted-foreground">
-                            {idx + 1}.
+                      <div className="min-w-0 flex-1 space-y-2">
+                        <div className="flex items-start gap-2.5">
+                          <span className="font-mono text-xs font-semibold text-primary pt-0.5">
+                            #{idx + 1}
                           </span>
-                          <p className="text-sm font-medium text-foreground line-clamp-2">
+                          <p className="text-sm font-medium text-foreground leading-snug line-clamp-3">
                             {q.statement}
                           </p>
                         </div>
-                        <div className="mt-1.5 ml-5 flex flex-wrap gap-1.5">
+
+                        {/* Badges de Metadados Enriquecidos */}
+                        <div className="flex flex-wrap items-center gap-1.5 pt-1">
                           {q.examBoard && (
-                            <Badge variant="outline" className="text-xs">
+                            <Badge
+                              variant="default"
+                              className="text-[11px] font-semibold tracking-wide"
+                            >
                               {q.examBoard}
                             </Badge>
                           )}
                           {q.year && (
-                            <Badge variant="outline" className="text-xs">
+                            <Badge variant="outline" className="text-[11px]">
                               {q.year}
                             </Badge>
                           )}
+                          {metadataOrg && (
+                            <Badge
+                              variant="secondary"
+                              className="text-[11px] bg-secondary/80 text-secondary-foreground"
+                            >
+                              {metadataOrg}
+                            </Badge>
+                          )}
+                          {metadataRole && (
+                            <Badge variant="outline" className="text-[11px] border-primary/30">
+                              {metadataRole}
+                            </Badge>
+                          )}
+                          {q.contestName && (
+                            <Badge variant="outline" className="text-[11px]">
+                              {q.contestName}
+                            </Badge>
+                          )}
+                          {qNum && (
+                            <Badge variant="outline" className="text-[11px] font-mono">
+                              Q.{qNum}
+                            </Badge>
+                          )}
+                          <Badge variant="outline" className="text-[11px] capitalize">
+                            {q.isTrueFalse ? "Certo/Errado" : "Múltipla Escolha"}
+                          </Badge>
                           {q.difficulty !== null && (
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge variant="secondary" className="text-[11px]">
                               {difficultyLabel(q.difficulty)}
                             </Badge>
                           )}
-                          {alts.length > 0 && (
-                            <Badge variant="secondary" className="text-xs">
-                              {alts.length} alternativas
-                            </Badge>
-                          )}
-                          {q.stats && q.stats.totalAttempts > 0 && (
-                            <Badge
-                              variant={q.stats.accuracy >= 0.7 ? "default" : "destructive"}
-                              className="text-xs"
-                            >
-                              {accuracyPercent(q.stats.accuracy)} em {q.stats.totalAttempts}{" "}
-                              tentativa(s)
-                            </Badge>
-                          )}
                           {wasAnswered && (
-                            <Badge variant="default" className="text-xs">
+                            <Badge variant="default" className="text-[11px]">
                               Respondida
                             </Badge>
                           )}
-                          {q.tags.slice(0, 3).map((tag) => (
-                            <Badge key={tag} variant="outline" className="text-xs">
-                              {tag}
-                            </Badge>
-                          ))}
                         </div>
                       </div>
                     </div>

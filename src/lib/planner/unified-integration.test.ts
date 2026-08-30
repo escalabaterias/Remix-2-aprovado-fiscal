@@ -16,31 +16,13 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  scoreCandidates,
-  type PlannerCandidate,
-  type DiagnosticData,
-} from "@/lib/planner/engine";
-import {
-  buildUnifiedSchedule,
-  DEFAULT_REVIEW_MINUTES,
-} from "@/lib/scheduler/engine";
-import {
-  adaptReviewQueue,
-  buildTopicMetaMap,
-} from "@/lib/scheduler/service";
-import type {
-  ReviewTaskCandidate,
-  UnifiedSchedulerConfig,
-} from "@/lib/scheduler/types";
+import { scoreCandidates, type PlannerCandidate, type DiagnosticData } from "@/lib/planner/engine";
+import { buildUnifiedSchedule, DEFAULT_REVIEW_MINUTES } from "@/lib/scheduler/engine";
+import { adaptReviewQueue, buildTopicMetaMap } from "@/lib/scheduler/service";
+import type { ReviewTaskCandidate, UnifiedSchedulerConfig } from "@/lib/scheduler/types";
 import type { ReviewQueueItem } from "@/lib/review/service";
 import type { TopicReviewInput } from "@/lib/review/types";
-import {
-  emptyWeek,
-  weekStartOf,
-  todayISO,
-  addDays,
-} from "@/lib/planner/availability";
+import { emptyWeek, weekStartOf, todayISO, addDays } from "@/lib/planner/availability";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -198,10 +180,7 @@ describe("unified integration — generatePlanTasks with Unified Service", () =>
 
   // 2. Plano com estudo + revisão
   it("2. study + review plan produces tasks from both sources", () => {
-    const candidates = [
-      mkCandidate(1, "Direito", 5, 0.2),
-      mkCandidate(2, "Contab", 4, 0.4),
-    ];
+    const candidates = [mkCandidate(1, "Direito", 5, 0.2), mkCandidate(2, "Contab", 4, 0.4)];
     const scored = scoreCandidates(candidates, {
       startDate: w1,
       examDate: null,
@@ -255,10 +234,7 @@ describe("unified integration — generatePlanTasks with Unified Service", () =>
 
   // 4. Filtro pelo concurso (adaptReviewQueue + buildTopicMetaMap)
   it("4. review queue filtered by contest topics", () => {
-    const candidates = [
-      mkCandidate(1, "S1", 5, 0.2),
-      mkCandidate(2, "S2", 4, 0.4),
-    ];
+    const candidates = [mkCandidate(1, "S1", 5, 0.2), mkCandidate(2, "S2", 4, 0.4)];
     const scored = scoreCandidates(candidates, {
       startDate: w1,
       examDate: null,
@@ -287,10 +263,7 @@ describe("unified integration — generatePlanTasks with Unified Service", () =>
 
   // 5. Deduplicação estudo/revisão
   it("5. deduplication: review takes precedence over study for same topic", () => {
-    const candidates = [
-      mkCandidate(1, "S1", 5, 0.2),
-      mkCandidate(2, "S2", 4, 0.4),
-    ];
+    const candidates = [mkCandidate(1, "S1", 5, 0.2), mkCandidate(2, "S2", 4, 0.4)];
     const scored = scoreCandidates(candidates, {
       startDate: w1,
       examDate: null,
@@ -321,9 +294,7 @@ describe("unified integration — generatePlanTasks with Unified Service", () =>
 
   // 6. Respeito à disponibilidade
   it("6. respects availability — no tasks on zero-availability days", () => {
-    const candidates = [
-      mkCandidate(1, "S1", 5, 0.2),
-    ];
+    const candidates = [mkCandidate(1, "S1", 5, 0.2)];
     const scored = scoreCandidates(candidates, {
       startDate: w1,
       examDate: null,
@@ -350,9 +321,7 @@ describe("unified integration — generatePlanTasks with Unified Service", () =>
 
   // 7. Respeito ao reviewCap
   it("7. respects reviewCap — review minutes bounded", () => {
-    const candidates = [
-      mkCandidate(1, "S1", 5, 0.2),
-    ];
+    const candidates = [mkCandidate(1, "S1", 5, 0.2)];
     const scored = scoreCandidates(candidates, {
       startDate: w1,
       examDate: null,
@@ -392,9 +361,7 @@ describe("unified integration — generatePlanTasks with Unified Service", () =>
 
   // 8. Revisão urgente
   it("8. urgent review gets priority placement", () => {
-    const candidates = [
-      mkCandidate(1, "S1", 5, 0.2),
-    ];
+    const candidates = [mkCandidate(1, "S1", 5, 0.2)];
     const scored = scoreCandidates(candidates, {
       startDate: w1,
       examDate: null,
@@ -423,10 +390,7 @@ describe("unified integration — generatePlanTasks with Unified Service", () =>
 
   // 9. Source correto em plan_tasks
   it("9. source field correctly set for study and review tasks", () => {
-    const candidates = [
-      mkCandidate(1, "S1", 5, 0.2),
-      mkCandidate(2, "S2", 4, 0.4),
-    ];
+    const candidates = [mkCandidate(1, "S1", 5, 0.2), mkCandidate(2, "S2", 4, 0.4)];
     const scored = scoreCandidates(candidates, {
       startDate: w1,
       examDate: null,
@@ -506,9 +470,7 @@ describe("unified integration — generatePlanTasks with Unified Service", () =>
 
   // 11. Comportamento sem dados de revisão (review queue vazia)
   it("11. empty review queue produces study-only schedule", () => {
-    const candidates = [
-      mkCandidate(1, "S1", 5, 0.2),
-    ];
+    const candidates = [mkCandidate(1, "S1", 5, 0.2)];
     const scored = scoreCandidates(candidates, {
       startDate: w1,
       examDate: null,
@@ -565,7 +527,7 @@ describe("unified integration — generatePlanTasks with Unified Service", () =>
     // adaptReviewQueue processes all items in a single pass,
     // buildTopicMetaMap processes all scored in a single pass.
     const candidates = Array.from({ length: 20 }, (_, i) =>
-      mkCandidate(i + 1, `S${(i % 4) + 1}`, 5 - (i % 5), (i * 0.05)),
+      mkCandidate(i + 1, `S${(i % 4) + 1}`, 5 - (i % 5), i * 0.05),
     );
     const scored = scoreCandidates(candidates, {
       startDate: w1,

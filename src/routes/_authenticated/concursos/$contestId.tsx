@@ -186,9 +186,7 @@ function ContestDetailPage() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="label-eyebrow">Editais</p>
-              <h2 className="mt-1 font-display text-base font-semibold">
-                Versões e retificações
-              </h2>
+              <h2 className="mt-1 font-display text-base font-semibold">Versões e retificações</h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Cada versão é preservada. A comparação automática entre versões virá nas próximas
                 etapas.
@@ -205,9 +203,7 @@ function ContestDetailPage() {
                 <li key={edital.id} className="flex flex-wrap items-center gap-3 py-3">
                   <Badge variant="outline">v{edital.version}</Badge>
                   <span className="text-sm">{EDITAL_STATUS_LABELS[edital.status]}</span>
-                  {edital.is_rectification ? (
-                    <Badge variant="secondary">retificação</Badge>
-                  ) : null}
+                  {edital.is_rectification ? <Badge variant="secondary">retificação</Badge> : null}
                   <span className="text-sm text-muted-foreground">
                     {edital.published_at
                       ? new Date(edital.published_at).toLocaleDateString("pt-BR")

@@ -82,15 +82,15 @@ export type KnowledgeMap = Map<string, KnowledgeState>;
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Peso do fator de recorrência no score final. */
-export const WEIGHT_RECURRENCE = 0.30;
+export const WEIGHT_RECURRENCE = 0.3;
 /** Peso do fator de impacto no mastery. */
 export const WEIGHT_MASTERY_IMPACT = 0.25;
 /** Peso do fator de frequência da categoria. */
-export const WEIGHT_CATEGORY_FREQUENCY = 0.20;
+export const WEIGHT_CATEGORY_FREQUENCY = 0.2;
 /** Peso do fator de recência. */
 export const WEIGHT_RECENCY = 0.15;
 /** Peso do fator de status. */
-export const WEIGHT_STATUS = 0.10;
+export const WEIGHT_STATUS = 0.1;
 
 /**
  * Constante de decaimento para recência (em dias).
@@ -143,9 +143,7 @@ export function computeMasteryImpactFactor(knowledge: KnowledgeState | null): nu
  * Calcula o fator de frequência da categoria no tópico (0..1).
  * Normaliza pela constante FREQUENCY_CAP.
  */
-export function computeCategoryFrequencyFactor(
-  categoryCount: number,
-): number {
+export function computeCategoryFrequencyFactor(categoryCount: number): number {
   if (categoryCount <= 0) return 0;
   return clamp01(categoryCount / FREQUENCY_CAP);
 }
@@ -195,10 +193,10 @@ export function computeErrorPriority(
   // Score composto
   const score = clamp01(
     WEIGHT_RECURRENCE * recurrence +
-    WEIGHT_MASTERY_IMPACT * masteryImpact +
-    WEIGHT_CATEGORY_FREQUENCY * categoryFrequency +
-    WEIGHT_RECENCY * recency +
-    WEIGHT_STATUS * status,
+      WEIGHT_MASTERY_IMPACT * masteryImpact +
+      WEIGHT_CATEGORY_FREQUENCY * categoryFrequency +
+      WEIGHT_RECENCY * recency +
+      WEIGHT_STATUS * status,
   );
 
   const factors: PriorityFactors = {

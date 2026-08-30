@@ -18,10 +18,17 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 // MOCK DO SUPABASE
 // ─────────────────────────────────────────────────────────────────────────────
 
+const maybeSingleMock = vi.fn();
+const filterMock = vi.fn(() => ({ maybeSingle: maybeSingleMock }));
+const selectQueryMock = vi.fn(() => ({ filter: filterMock, maybeSingle: maybeSingleMock }));
+
 const singleMock = vi.fn();
 const selectMock = vi.fn(() => ({ single: singleMock }));
 const insertMock = vi.fn(() => ({ select: selectMock }));
-const fromMock = vi.fn(() => ({ insert: insertMock }));
+const fromMock = vi.fn(() => ({
+  insert: insertMock,
+  select: selectQueryMock,
+}));
 const getUserMock = vi.fn();
 
 vi.mock("@/integrations/supabase/client", () => ({
@@ -104,6 +111,7 @@ function makeInsertedRow(overrides: Record<string, unknown> = {}) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  maybeSingleMock.mockResolvedValue({ data: null, error: null });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -244,9 +252,10 @@ describe("createQuestion", () => {
         alternatives: ["Brasília", "São Paulo", "Rio de Janeiro", "Salvador"],
         correct_answer: "Brasília",
         is_true_false: false,
-        exam_board: "CESPE",
+        exam_board: "CEBRASPE",
         contest_name: "Concurso TRF5",
         contest_id: "contest-1",
+        source_id: null,
         year: 2025,
         subject_id: "sub-1",
         topic_id: "top-1",
@@ -256,6 +265,9 @@ describe("createQuestion", () => {
         tags: ["constitucional", "geografia"],
         explanation: "A capital do Brasil é Brasília desde 1960.",
         is_public: true,
+        metadata: {
+          content_hash: expect.any(String),
+        },
       });
     });
 
@@ -296,6 +308,7 @@ describe("createQuestion", () => {
         exam_board: null,
         contest_name: null,
         contest_id: null,
+        source_id: null,
         year: null,
         subject_id: null,
         topic_id: null,
@@ -305,6 +318,9 @@ describe("createQuestion", () => {
         tags: [],
         explanation: null,
         is_public: false,
+        metadata: {
+          content_hash: expect.any(String),
+        },
       });
     });
 
@@ -409,6 +425,21 @@ describe("createQuestion", () => {
       const result = await createQuestion(makeFullInput());
 
       expect(result.tags).toEqual([]);
+    });
+  });
+
+  // ─── Deduplicação ─────────────────────────────────────────────────────────
+
+  describe("deduplicação", () => {
+    it("retorna questão existente sem chamar insert quando hash coincide", async () => {
+      authenticatedUser();
+      const existingRow = makeInsertedRow({ id: "q-existing-123" });
+      maybeSingleMock.mockResolvedValue({ data: existingRow, error: null });
+
+      const result = await createQuestion(makeFullInput());
+
+      expect(result.questionId).toBe("q-existing-123");
+      expect(insertMock).not.toHaveBeenCalled();
     });
   });
 });

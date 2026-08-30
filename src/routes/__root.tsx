@@ -81,7 +81,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#1b2230" },
       { title: "Aprovado Fiscal" },
-      { name: "description", content: "Plataforma de preparação orientada por dados para concursos fiscais." },
+      {
+        name: "description",
+        content: "Plataforma de preparação orientada por dados para concursos fiscais.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

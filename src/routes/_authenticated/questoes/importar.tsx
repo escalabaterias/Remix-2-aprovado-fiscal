@@ -108,30 +108,27 @@ function ImportarQuestaoPage() {
   }, [handlePaste]);
 
   // ── Selecionar arquivo ──
-  const handleFileSelect = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
+  const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-      if (!file.type.startsWith("image/")) {
-        toast.error("Selecione um arquivo de imagem.");
-        return;
-      }
+    if (!file.type.startsWith("image/")) {
+      toast.error("Selecione um arquivo de imagem.");
+      return;
+    }
 
-      try {
-        const url = await fileToPreviewUrl(file);
-        setImageFile(file);
-        setPreviewUrl(url);
-        setResult(null);
-      } catch {
-        toast.error("Falha ao processar o arquivo.");
-      }
+    try {
+      const url = await fileToPreviewUrl(file);
+      setImageFile(file);
+      setPreviewUrl(url);
+      setResult(null);
+    } catch {
+      toast.error("Falha ao processar o arquivo.");
+    }
 
-      // Reset input para permitir selecionar o mesmo arquivo novamente
-      e.target.value = "";
-    },
-    [],
-  );
+    // Reset input para permitir selecionar o mesmo arquivo novamente
+    e.target.value = "";
+  }, []);
 
   // ── Processar imagem ──
   const handleProcess = useCallback(async () => {
@@ -164,9 +161,7 @@ function ImportarQuestaoPage() {
       setResult(extractionResult);
 
       if (extractionResult.created.length > 0) {
-        toast.success(
-          `${extractionResult.created.length} questão(ões) importada(s) com sucesso.`,
-        );
+        toast.success(`${extractionResult.created.length} questão(ões) importada(s) com sucesso.`);
       } else if (extractionResult.extraction.errors.length > 0) {
         toast.error("Falha na extração. Verifique os erros abaixo.");
       } else {
@@ -220,9 +215,7 @@ function ImportarQuestaoPage() {
                   </svg>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-lg font-medium text-foreground">
-                    Cole uma imagem aqui
-                  </p>
+                  <p className="text-lg font-medium text-foreground">Cole uma imagem aqui</p>
                   <p className="text-sm text-muted-foreground">
                     Use{" "}
                     <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-xs">
@@ -240,10 +233,7 @@ function ImportarQuestaoPage() {
                   <span className="text-xs text-muted-foreground">ou</span>
                   <Separator className="w-12" />
                 </div>
-                <Button
-                  variant="outline"
-                  onClick={() => fileInputRef.current?.click()}
-                >
+                <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
                   Selecionar arquivo
                 </Button>
                 <input
@@ -401,21 +391,16 @@ function ExtractionResultView({
             <Badge variant={extraction.success ? "default" : "destructive"}>
               {extraction.success ? "Extração bem-sucedida" : "Falha na extração"}
             </Badge>
+            <Badge variant="outline">{extraction.totalExtracted} questão(ões) extraída(s)</Badge>
             <Badge variant="outline">
-              {extraction.totalExtracted} questão(ões) extraída(s)
-            </Badge>
-            <Badge variant="outline">
-              Confiança: {(extraction.overallConfidence * 100).toFixed(0)}% ({extraction.confidenceLevel})
+              Confiança: {(extraction.overallConfidence * 100).toFixed(0)}% (
+              {extraction.confidenceLevel})
             </Badge>
             {created.length > 0 && (
-              <Badge variant="default">
-                {created.length} salva(s) no banco
-              </Badge>
+              <Badge variant="default">{created.length} salva(s) no banco</Badge>
             )}
             {hasCreationErrors && (
-              <Badge variant="destructive">
-                {creationErrors.length} erro(s) ao salvar
-              </Badge>
+              <Badge variant="destructive">{creationErrors.length} erro(s) ao salvar</Badge>
             )}
           </div>
 
@@ -470,9 +455,7 @@ function ExtractionResultView({
             Questões extraídas ({extraction.questions.length})
           </h3>
           {extraction.questions.map((eq, idx) => {
-            const wasSaved = created.some(
-              (c) => c.statement === eq.statement,
-            );
+            const wasSaved = created.some((c) => c.statement === eq.statement);
             return (
               <Card key={eq.extractionId ?? idx}>
                 <CardHeader className="pb-2">
@@ -480,10 +463,7 @@ function ExtractionResultView({
                     <CardTitle className="text-sm font-semibold leading-relaxed">
                       {idx + 1}. {eq.statement}
                     </CardTitle>
-                    <Badge
-                      variant={wasSaved ? "default" : "destructive"}
-                      className="shrink-0"
-                    >
+                    <Badge variant={wasSaved ? "default" : "destructive"} className="shrink-0">
                       {wasSaved ? "Salva" : "Não salva"}
                     </Badge>
                   </div>

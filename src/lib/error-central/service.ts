@@ -182,15 +182,10 @@ async function fetchErrorsAndKnowledge(
   errorQuery = errorQuery.order("occurred_at", { ascending: false });
 
   // Knowledge query — all topics (needed for cross-topic recurrence analysis)
-  const knowledgeQuery = supabase
-    .from("user_topic_knowledge")
-    .select(KNOWLEDGE_SELECT);
+  const knowledgeQuery = supabase.from("user_topic_knowledge").select(KNOWLEDGE_SELECT);
 
   // 2 queries em paralelo — sem N+1
-  const [errorsResult, knowledgeResult] = await Promise.all([
-    errorQuery,
-    knowledgeQuery,
-  ]);
+  const [errorsResult, knowledgeResult] = await Promise.all([errorQuery, knowledgeQuery]);
 
   if (errorsResult.error) throw errorsResult.error;
   if (knowledgeResult.error) throw knowledgeResult.error;
@@ -335,10 +330,7 @@ export async function fetchErrorDetail(
 
   const [allErrorsResult, knowledgeResult] = await Promise.all([
     topicId
-      ? supabase
-          .from("error_entries")
-          .select(ERROR_SELECT)
-          .eq("topic_id", topicId)
+      ? supabase.from("error_entries").select(ERROR_SELECT).eq("topic_id", topicId)
       : Promise.resolve({ data: [] as ErrorRow[], error: null }),
     topicId
       ? supabase

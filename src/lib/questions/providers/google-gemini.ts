@@ -130,8 +130,8 @@ Retorne SOMENTE um JSON válido (sem markdown, sem texto extra) com a seguinte e
 Regras:
 - Extraia TODAS as questões visíveis na imagem.
 - Examine o cabeçalho e rodapé da questão para identificar banca, ano, órgão, concurso, cargo, prova e número da questão.
-- Se houver gabarito visível, preencha correctAnswer e isCorrect nas alternativas.
-- Se não conseguir determinar a resposta correta, deixe correctAnswer como null e isCorrect como null.
+- Se houver gabarito explicitamente impresso ou fornecido na fonte, preencha correctAnswer e isCorrect nas alternativas.
+- Se o gabarito NÃO estiver explicitamente presente na fonte, NUNCA adivinhe, deduza ou resolva a questão para inventar o gabarito: MANTENHA correctAnswer como null e isCorrect como null nas alternativas.
 - Se for questão de certo/errado (V/F), defina isTrueFalse como true e correctAnswer como "C" ou "E".
 - NUNCA invente URLs ou IDs externos que não estejam explicitamente impressos no texto da imagem. Se ausente, retorne null.
 - Estime a dificuldade de 1 (muito fácil) a 5 (muito difícil).

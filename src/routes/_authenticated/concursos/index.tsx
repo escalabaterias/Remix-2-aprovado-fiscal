@@ -35,10 +35,14 @@ export const Route = createFileRoute("/_authenticated/concursos/")({
       { title: "Meus Concursos — Aprovado Fiscal" },
       {
         name: "description",
-        content: "Cadastre e acompanhe múltiplos concursos fiscais com órgão, banca e data de prova.",
+        content:
+          "Cadastre e acompanhe múltiplos concursos fiscais com órgão, banca e data de prova.",
       },
       { property: "og:title", content: "Meus Concursos — Aprovado Fiscal" },
-      { property: "og:description", content: "Gestão de concursos acompanhados no Aprovado Fiscal." },
+      {
+        property: "og:description",
+        content: "Gestão de concursos acompanhados no Aprovado Fiscal.",
+      },
       { name: "robots", content: "noindex" },
     ],
   }),
