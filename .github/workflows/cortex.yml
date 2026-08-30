@@ -1,0 +1,40 @@
+# Automacao do mapa do projeto (gerada pela extensao).
+# Gera um resumo tecnico do projeto no CI e o commita (graphify-out/) de volta ao repositorio.
+name: Mapa do Projeto
+
+on:
+  push:
+    branches: ["main"]
+    paths-ignore:
+      - "graphify-out/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cortex-main
+  cancel-in-progress: true
+
+jobs:
+  build-cortex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Prepara engine
+        run: uv tool install graphifyy
+
+      - name: Gera o mapa do projeto
+        run: graphify extract . --code-only --force
+
+      - name: Salva o mapa do projeto
+        run: |
+          git config user.name "cortex-bot"
+          git config user.email "cortex-bot@users.noreply.github.com"
+          git add graphify-out
+          git diff --staged --quiet || git commit -m "chore: atualiza mapa do projeto"
+          git push

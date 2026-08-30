@@ -1,0 +1,1178 @@
+{
+  ".github/workflows/cortex.yml": {
+    "size": 990,
+    "mtime_ns": 1788071343667917025,
+    "indexed_at_ns": 1788071352854568784,
+    "word_count": 119,
+    "hashes": {
+      ".github/workflows/cortex.yml": "918c44b12282680d3f41d93b8e2e750391d3d5d680227101213ff018c546045c"
+    }
+  },
+  ".lovable/project.json": {
+    "size": 124,
+    "mtime_ns": 1788071343667917025,
+    "indexed_at_ns": 1788071348196573677,
+    "word_count": 8,
+    "hashes": {
+      ".lovable/project.json": "3c5f314acde9da84c40f6b19646ecd94d1600ed610537a6b6aed411da2e4acab"
+    }
+  },
+  "AGENTS.md": {
+    "size": 480,
+    "mtime_ns": 1788071343667917025,
+    "indexed_at_ns": 1788071352854857823,
+    "word_count": 78,
+    "hashes": { "agents.md": "42c67bbb570c9e3aad1a6bba3fd16fdf49773b4a6c73af5b65bc2e42e9041e45" }
+  },
+  "README.md": {
+    "size": 16010,
+    "mtime_ns": 1788071343667917025,
+    "indexed_at_ns": 1788071352855078234,
+    "word_count": 1940,
+    "hashes": { "readme.md": "713b46ef146cc1029472d375d73a6f4eba63d4055de558b98238fd585730021f" }
+  },
+  "components.json": {
+    "size": 443,
+    "mtime_ns": 1788071343667917025,
+    "indexed_at_ns": 1788071348197010603,
+    "word_count": 40,
+    "hashes": {
+      "components.json": "d835b0dc9ba717f0d30594c6767da93ee5ca713dc3d09d18d853af8c42585712"
+    }
+  },
+  "eslint.config.js": {
+    "size": 1250,
+    "mtime_ns": 1788071343667917025,
+    "indexed_at_ns": 1788071347757356077,
+    "word_count": 101
+  },
+  "package.json": {
+    "size": 3051,
+    "mtime_ns": 1788071343672899214,
+    "indexed_at_ns": 1788071348198102019,
+    "word_count": 189,
+    "hashes": { "package.json": "27f7eac4e416b575df8fe323add04f7f5517799ea393acf7764e79947a54cafe" }
+  },
+  "public/robots.txt": {
+    "size": 160,
+    "mtime_ns": 1788071343674166725,
+    "indexed_at_ns": 1788071352855334443,
+    "word_count": 20,
+    "hashes": {
+      "public/robots.txt": "52be51655927abf3c330aac68eb01adb0ebdf70daaf16078b211b12ab4088d51"
+    }
+  },
+  "src/components/common/EmptyState.tsx": {
+    "size": 868,
+    "mtime_ns": 1788071343674237787,
+    "indexed_at_ns": 1788071347759109869,
+    "word_count": 87
+  },
+  "src/components/layout/AppShell.tsx": {
+    "size": 5284,
+    "mtime_ns": 1788071343674237787,
+    "indexed_at_ns": 1788071347759633797,
+    "word_count": 434
+  },
+  "src/components/settings/PreferencesPanel.tsx": {
+    "size": 5496,
+    "mtime_ns": 1788071343674237787,
+    "indexed_at_ns": 1788071347760276996,
+    "word_count": 469
+  },
+  "src/components/ui/accordion.tsx": {
+    "size": 2015,
+    "mtime_ns": 1788071343674237787,
+    "indexed_at_ns": 1788071347760865715,
+    "word_count": 145
+  },
+  "src/components/ui/alert-dialog.tsx": {
+    "size": 4183,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347761391536,
+    "word_count": 289
+  },
+  "src/components/ui/alert.tsx": {
+    "size": 1589,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347761959465,
+    "word_count": 145
+  },
+  "src/components/ui/aspect-ratio.tsx": {
+    "size": 143,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347762481870,
+    "word_count": 14
+  },
+  "src/components/ui/avatar.tsx": {
+    "size": 1413,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347763017369,
+    "word_count": 117
+  },
+  "src/components/ui/badge.tsx": {
+    "size": 1123,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347763532820,
+    "word_count": 100
+  },
+  "src/components/ui/breadcrumb.tsx": {
+    "size": 2749,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347764104286,
+    "word_count": 244
+  },
+  "src/components/ui/button.tsx": {
+    "size": 1894,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347764628705,
+    "word_count": 171
+  },
+  "src/components/ui/calendar.tsx": {
+    "size": 7226,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347765176767,
+    "word_count": 462
+  },
+  "src/components/ui/card.tsx": {
+    "size": 1817,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347765744166,
+    "word_count": 173
+  },
+  "src/components/ui/carousel.tsx": {
+    "size": 6200,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347766263044,
+    "word_count": 557
+  },
+  "src/components/ui/chart.tsx": {
+    "size": 10570,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347766823920,
+    "word_count": 895
+  },
+  "src/components/ui/checkbox.tsx": {
+    "size": 1043,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347767372153,
+    "word_count": 82
+  },
+  "src/components/ui/collapsible.tsx": {
+    "size": 335,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347767911128,
+    "word_count": 26
+  },
+  "src/components/ui/command.tsx": {
+    "size": 4876,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347768414638,
+    "word_count": 355
+  },
+  "src/components/ui/context-menu.tsx": {
+    "size": 7360,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347768965064,
+    "word_count": 479
+  },
+  "src/components/ui/dialog.tsx": {
+    "size": 3648,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347769500092,
+    "word_count": 268
+  },
+  "src/components/ui/drawer.tsx": {
+    "size": 2973,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347770044298,
+    "word_count": 246
+  },
+  "src/components/ui/dropdown-menu.tsx": {
+    "size": 7565,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347770561523,
+    "word_count": 490
+  },
+  "src/components/ui/form.tsx": {
+    "size": 4201,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347771108804,
+    "word_count": 404
+  },
+  "src/components/ui/hover-card.tsx": {
+    "size": 1246,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347771635276,
+    "word_count": 86
+  },
+  "src/components/ui/input-otp.tsx": {
+    "size": 2232,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347772189560,
+    "word_count": 207
+  },
+  "src/components/ui/input.tsx": {
+    "size": 776,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347772723085,
+    "word_count": 69
+  },
+  "src/components/ui/label.tsx": {
+    "size": 716,
+    "mtime_ns": 1788071343674572893,
+    "indexed_at_ns": 1788071347773232165,
+    "word_count": 70
+  },
+  "src/components/ui/menubar.tsx": {
+    "size": 8515,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347773764758,
+    "word_count": 600
+  },
+  "src/components/ui/navigation-menu.tsx": {
+    "size": 5152,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347774313282,
+    "word_count": 326
+  },
+  "src/components/ui/pagination.tsx": {
+    "size": 2739,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347774935964,
+    "word_count": 254
+  },
+  "src/components/ui/popover.tsx": {
+    "size": 1352,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347775467976,
+    "word_count": 93
+  },
+  "src/components/ui/progress.tsx": {
+    "size": 781,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347776011831,
+    "word_count": 71
+  },
+  "src/components/ui/radio-group.tsx": {
+    "size": 1405,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347776533243,
+    "word_count": 110
+  },
+  "src/components/ui/resizable.tsx": {
+    "size": 1552,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347777074914,
+    "word_count": 117
+  },
+  "src/components/ui/scroll-area.tsx": {
+    "size": 1635,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347777790679,
+    "word_count": 120
+  },
+  "src/components/ui/select.tsx": {
+    "size": 5749,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347778616069,
+    "word_count": 379
+  },
+  "src/components/ui/separator.tsx": {
+    "size": 723,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347779250953,
+    "word_count": 67
+  },
+  "src/components/ui/sheet.tsx": {
+    "size": 4248,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347779824713,
+    "word_count": 322
+  },
+  "src/components/ui/sidebar.tsx": {
+    "size": 23975,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347780364200,
+    "word_count": 1868
+  },
+  "src/components/ui/skeleton.tsx": {
+    "size": 239,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347780993754,
+    "word_count": 26
+  },
+  "src/components/ui/slider.tsx": {
+    "size": 1025,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347781501191,
+    "word_count": 83
+  },
+  "src/components/ui/sonner.tsx": {
+    "size": 734,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347782031340,
+    "word_count": 55
+  },
+  "src/components/ui/switch.tsx": {
+    "size": 1156,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347782551030,
+    "word_count": 85
+  },
+  "src/components/ui/table.tsx": {
+    "size": 2820,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347783158743,
+    "word_count": 238
+  },
+  "src/components/ui/tabs.tsx": {
+    "size": 1934,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347783712496,
+    "word_count": 143
+  },
+  "src/components/ui/textarea.tsx": {
+    "size": 677,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347784231615,
+    "word_count": 61
+  },
+  "src/components/ui/toggle-group.tsx": {
+    "size": 1752,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347784761002,
+    "word_count": 139
+  },
+  "src/components/ui/toggle.tsx": {
+    "size": 1534,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347785273028,
+    "word_count": 130
+  },
+  "src/components/ui/tooltip.tsx": {
+    "size": 1278,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347785809879,
+    "word_count": 90
+  },
+  "src/hooks/use-mobile.tsx": {
+    "size": 576,
+    "mtime_ns": 1788071343674899216,
+    "indexed_at_ns": 1788071347786285546,
+    "word_count": 56
+  },
+  "src/hooks/useAuth.tsx": {
+    "size": 1378,
+    "mtime_ns": 1788071343675899217,
+    "indexed_at_ns": 1788071347786773707,
+    "word_count": 149
+  },
+  "src/integrations/lovable/index.ts": {
+    "size": 939,
+    "mtime_ns": 1788071343676785871,
+    "indexed_at_ns": 1788071347787288828,
+    "word_count": 108
+  },
+  "src/integrations/supabase/auth-attacher.ts": {
+    "size": 611,
+    "mtime_ns": 1788071343676785871,
+    "indexed_at_ns": 1788071347787861627,
+    "word_count": 85
+  },
+  "src/integrations/supabase/auth-middleware.ts": {
+    "size": 3234,
+    "mtime_ns": 1788071343676912217,
+    "indexed_at_ns": 1788071347788375405,
+    "word_count": 322
+  },
+  "src/integrations/supabase/client.server.ts": {
+    "size": 2753,
+    "mtime_ns": 1788071343676912217,
+    "indexed_at_ns": 1788071347788921073,
+    "word_count": 297
+  },
+  "src/integrations/supabase/client.ts": {
+    "size": 2493,
+    "mtime_ns": 1788071343676912217,
+    "indexed_at_ns": 1788071347789526823,
+    "word_count": 247
+  },
+  "src/integrations/supabase/cron-auth.ts": {
+    "size": 1109,
+    "mtime_ns": 1788071343676912217,
+    "indexed_at_ns": 1788071347790089122,
+    "word_count": 117
+  },
+  "src/integrations/supabase/previewAuthStorage.ts": {
+    "size": 4336,
+    "mtime_ns": 1788071343676912217,
+    "indexed_at_ns": 1788071347790609784,
+    "word_count": 496
+  },
+  "src/integrations/supabase/types.ts": {
+    "size": 69994,
+    "mtime_ns": 1788071343676912217,
+    "indexed_at_ns": 1788071347791173605,
+    "word_count": 5414
+  },
+  "src/lib/domain.ts": {
+    "size": 2432,
+    "mtime_ns": 1788071343677582697,
+    "indexed_at_ns": 1788071347794209098,
+    "word_count": 244
+  },
+  "src/lib/error-capture.ts": {
+    "size": 2898,
+    "mtime_ns": 1788071343677582697,
+    "indexed_at_ns": 1788071347794721154,
+    "word_count": 358
+  },
+  "src/lib/error-page.ts": {
+    "size": 1371,
+    "mtime_ns": 1788071343678083331,
+    "indexed_at_ns": 1788071347797753931,
+    "word_count": 159
+  },
+  "src/lib/lovable-error-reporting.ts": {
+    "size": 1739,
+    "mtime_ns": 1788071343678474050,
+    "indexed_at_ns": 1788071347801187807,
+    "word_count": 197
+  },
+  "src/lib/navigation.ts": {
+    "size": 1469,
+    "mtime_ns": 1788071343678474050,
+    "indexed_at_ns": 1788071347801656772,
+    "word_count": 193
+  },
+  "src/lib/planner/availability.ts": {
+    "size": 3894,
+    "mtime_ns": 1788071343678474050,
+    "indexed_at_ns": 1788071347802197771,
+    "word_count": 489
+  },
+  "src/lib/planner/engine.test.ts": {
+    "size": 35610,
+    "mtime_ns": 1788071343678876381,
+    "indexed_at_ns": 1788071347802758778,
+    "word_count": 4245
+  },
+  "src/lib/planner/engine.ts": {
+    "size": 26204,
+    "mtime_ns": 1788071343678876381,
+    "indexed_at_ns": 1788071347803540316,
+    "word_count": 3278
+  },
+  "src/lib/planner/service.ts": {
+    "size": 30384,
+    "mtime_ns": 1788071343678876381,
+    "indexed_at_ns": 1788071347806192965,
+    "word_count": 3043
+  },
+  "src/lib/utils.ts": {
+    "size": 169,
+    "mtime_ns": 1788071343683013689,
+    "indexed_at_ns": 1788071347837491804,
+    "word_count": 22
+  },
+  "src/routeTree.gen.ts": {
+    "size": 17777,
+    "mtime_ns": 1788071343683013689,
+    "indexed_at_ns": 1788071347837939680,
+    "word_count": 1199
+  },
+  "src/router.tsx": {
+    "size": 394,
+    "mtime_ns": 1788071343683013689,
+    "indexed_at_ns": 1788071347838404637,
+    "word_count": 47
+  },
+  "src/routes/README.md": {
+    "size": 835,
+    "mtime_ns": 1788071343683013689,
+    "indexed_at_ns": 1788071352855565013,
+    "word_count": 127,
+    "hashes": {
+      "src/routes/readme.md": "ea88bfcbff31d020ab0126f4478fac2bec78506291c9ffee983ea7ba32507b88"
+    }
+  },
+  "src/routes/__root.tsx": {
+    "size": 4470,
+    "mtime_ns": 1788071343683882520,
+    "indexed_at_ns": 1788071347839550084,
+    "word_count": 407
+  },
+  "src/routes/_authenticated/concursos/$contestId.tsx": {
+    "size": 18247,
+    "mtime_ns": 1788071343684063778,
+    "indexed_at_ns": 1788071347841571024,
+    "word_count": 1371
+  },
+  "src/routes/_authenticated/concursos/index.tsx": {
+    "size": 9664,
+    "mtime_ns": 1788071343684359490,
+    "indexed_at_ns": 1788071347842274887,
+    "word_count": 707
+  },
+  "src/routes/_authenticated/configuracoes.tsx": {
+    "size": 8331,
+    "mtime_ns": 1788071343684359490,
+    "indexed_at_ns": 1788071347842871410,
+    "word_count": 618
+  },
+  "src/routes/_authenticated/dashboard.tsx": {
+    "size": 14832,
+    "mtime_ns": 1788071343684359490,
+    "indexed_at_ns": 1788071347843434661,
+    "word_count": 1224
+  },
+  "src/routes/_authenticated/disponibilidade.tsx": {
+    "size": 6887,
+    "mtime_ns": 1788071343684803238,
+    "indexed_at_ns": 1788071347845341478,
+    "word_count": 620
+  },
+  "src/routes/_authenticated/materias.tsx": {
+    "size": 18748,
+    "mtime_ns": 1788071343684803238,
+    "indexed_at_ns": 1788071347847237695,
+    "word_count": 1484
+  },
+  "src/routes/_authenticated/plano/$planId.tsx": {
+    "size": 17587,
+    "mtime_ns": 1788071343684803238,
+    "indexed_at_ns": 1788071347847942430,
+    "word_count": 1410
+  },
+  "src/routes/_authenticated/plano/index.tsx": {
+    "size": 11816,
+    "mtime_ns": 1788071343685298001,
+    "indexed_at_ns": 1788071347848601991,
+    "word_count": 973
+  },
+  "src/routes/_authenticated/route.tsx": {
+    "size": 429,
+    "mtime_ns": 1788071343685508804,
+    "indexed_at_ns": 1788071347851286328,
+    "word_count": 55
+  },
+  "src/routes/auth.tsx": {
+    "size": 7639,
+    "mtime_ns": 1788071343685508804,
+    "indexed_at_ns": 1788071347851804285,
+    "word_count": 666
+  },
+  "src/routes/index.tsx": {
+    "size": 3825,
+    "mtime_ns": 1788071343685508804,
+    "indexed_at_ns": 1788071347852319015,
+    "word_count": 358
+  },
+  "src/routes/nova-senha.tsx": {
+    "size": 2301,
+    "mtime_ns": 1788071343685508804,
+    "indexed_at_ns": 1788071347852828485,
+    "word_count": 230
+  },
+  "src/server.ts": {
+    "size": 2048,
+    "mtime_ns": 1788071343685508804,
+    "indexed_at_ns": 1788071347853257205,
+    "word_count": 214
+  },
+  "src/services/ai/gateway.ts": {
+    "size": 2159,
+    "mtime_ns": 1788071343686045555,
+    "indexed_at_ns": 1788071347853834001,
+    "word_count": 296
+  },
+  "src/start.ts": {
+    "size": 1064,
+    "mtime_ns": 1788071343686045555,
+    "indexed_at_ns": 1788071347854273220,
+    "word_count": 123
+  },
+  "supabase/migrations/20260829173627_f8801c6d-c642-459d-88bd-4c90c7026f88.sql": {
+    "size": 28791,
+    "mtime_ns": 1788071343686277909,
+    "indexed_at_ns": 1788071348202202398,
+    "word_count": 3230,
+    "hashes": {
+      "supabase/migrations/20260829173627_f8801c6d-c642-459d-88bd-4c90c7026f88.sql": "ad8955a67f8c57c3ac924af1dfa79da76e685626b082dbe1acf11352dee690f8"
+    }
+  },
+  "supabase/migrations/20260829173647_2a9fc53f-2b6a-467e-9173-3e74a4b7b667.sql": {
+    "size": 81,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348202568451,
+    "word_count": 9,
+    "hashes": {
+      "supabase/migrations/20260829173647_2a9fc53f-2b6a-467e-9173-3e74a4b7b667.sql": "453ca3a4cfbd1a5b1c45a3cd3980a87f4c7c82216dcf14abd785663234c380e8"
+    }
+  },
+  "supabase/migrations/20260829180045_fc9a020b-0f82-481d-9ff5-02e538aca878.sql": {
+    "size": 4280,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348202929645,
+    "word_count": 507,
+    "hashes": {
+      "supabase/migrations/20260829180045_fc9a020b-0f82-481d-9ff5-02e538aca878.sql": "94898ccc2c5a7f6f3bca4aa5b5af7eb21e736235f9a0e06b1b02448e4b245679"
+    }
+  },
+  "supabase/migrations/20260829180118_9b373976-68a4-4379-a08d-bfcd66b665d5.sql": {
+    "size": 786,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348203255302,
+    "word_count": 78,
+    "hashes": {
+      "supabase/migrations/20260829180118_9b373976-68a4-4379-a08d-bfcd66b665d5.sql": "2967e5502dc51ebd27e99cdde822a52002d2ad5232431ee90e4d8c69804562f4"
+    }
+  },
+  "supabase/migrations/20260829180508_b4f3f8e9-bc42-4933-b7d7-71752b4ad21c.sql": {
+    "size": 3417,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348203571783,
+    "word_count": 426,
+    "hashes": {
+      "supabase/migrations/20260829180508_b4f3f8e9-bc42-4933-b7d7-71752b4ad21c.sql": "58126f3ebe115ac9582c7efed694dd88b64bc02ddda2bbbf5ee87df67ffc37f3"
+    }
+  },
+  "tsconfig.json": {
+    "size": 820,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348207207786,
+    "word_count": 57,
+    "hashes": {
+      "tsconfig.json": "fdf23b760bae3830b811d70d31cbb9498d978eb5dd3581d052919d44a937050a"
+    }
+  },
+  "vite.config.ts": {
+    "size": 820,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071347863718892,
+    "word_count": 108
+  },
+  "src/lib/knowledge/engine.test.ts": {
+    "size": 21718,
+    "mtime_ns": 1788071343678083331,
+    "indexed_at_ns": 1788071347798275474,
+    "word_count": 2434
+  },
+  "src/lib/knowledge/engine.ts": {
+    "size": 8474,
+    "mtime_ns": 1788071343678474050,
+    "indexed_at_ns": 1788071347798969769,
+    "word_count": 1217
+  },
+  "src/lib/knowledge/errors.ts": {
+    "size": 5287,
+    "mtime_ns": 1788071343678474050,
+    "indexed_at_ns": 1788071347799551795,
+    "word_count": 667
+  },
+  "src/lib/knowledge/service.ts": {
+    "size": 4534,
+    "mtime_ns": 1788071343678474050,
+    "indexed_at_ns": 1788071347800123842,
+    "word_count": 472
+  },
+  "src/lib/knowledge/signals.ts": {
+    "size": 2492,
+    "mtime_ns": 1788071343678474050,
+    "indexed_at_ns": 1788071347800687334,
+    "word_count": 323
+  },
+  "src/routes/_authenticated/central-erros/$errorId.tsx": {
+    "size": 9468,
+    "mtime_ns": 1788071343683972468,
+    "indexed_at_ns": 1788071347840169399,
+    "word_count": 706
+  },
+  "src/routes/_authenticated/central-erros/index.tsx": {
+    "size": 23328,
+    "mtime_ns": 1788071343684063778,
+    "indexed_at_ns": 1788071347840811747,
+    "word_count": 1674
+  },
+  "src/routes/_authenticated/dominio.tsx": {
+    "size": 7232,
+    "mtime_ns": 1788071343684803238,
+    "indexed_at_ns": 1788071347845920849,
+    "word_count": 566
+  },
+  "supabase/migrations/20260829191300_etapa3_1_knowledge_history.sql": {
+    "size": 6334,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348203952673,
+    "word_count": 678,
+    "hashes": {
+      "supabase/migrations/20260829191300_etapa3_1_knowledge_history.sql": "1f889e618b14fd6a2ced95e5cd00e74b2b5bb8f829b0fbb591fb31c6d163d02f"
+    }
+  },
+  "supabase/migrations/20260829193100_etapa3_1_1_idempotency_fix.sql": {
+    "size": 4471,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348204278150,
+    "word_count": 475,
+    "hashes": {
+      "supabase/migrations/20260829193100_etapa3_1_1_idempotency_fix.sql": "653655d61516d15ec7a4b9e620c361f68d7c1612f701e8119906e2e4ae9619f6"
+    }
+  },
+  "supabase/migrations/20260829193500_etapa3_1_2_ownership_integrity.sql": {
+    "size": 5886,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348204598478,
+    "word_count": 595,
+    "hashes": {
+      "supabase/migrations/20260829193500_etapa3_1_2_ownership_integrity.sql": "9a2be2acab4d147ab7f49ff85c975dc0b8ea32615c56ba7e335359957c67aae2"
+    }
+  },
+  "src/lib/diagnosis/engine.test.ts": {
+    "size": 81637,
+    "mtime_ns": 1788071343677332481,
+    "indexed_at_ns": 1788071347791954402,
+    "word_count": 7108
+  },
+  "src/lib/diagnosis/engine.ts": {
+    "size": 29323,
+    "mtime_ns": 1788071343677582697,
+    "indexed_at_ns": 1788071347792949869,
+    "word_count": 2853
+  },
+  "src/lib/diagnosis/service.ts": {
+    "size": 8523,
+    "mtime_ns": 1788071343677582697,
+    "indexed_at_ns": 1788071347793658661,
+    "word_count": 864
+  },
+  "src/routes/_authenticated/diagnostico/$topicId.tsx": {
+    "size": 12058,
+    "mtime_ns": 1788071343684359490,
+    "indexed_at_ns": 1788071347844107055,
+    "word_count": 821
+  },
+  "src/routes/_authenticated/diagnostico/index.tsx": {
+    "size": 13376,
+    "mtime_ns": 1788071343684803238,
+    "indexed_at_ns": 1788071347844756998,
+    "word_count": 842
+  },
+  "src/lib/planner/intelligence.ts": {
+    "size": 14106,
+    "mtime_ns": 1788071343678876381,
+    "indexed_at_ns": 1788071347805569672,
+    "word_count": 1240
+  },
+  "src/lib/planner/intelligence.test.ts": {
+    "size": 13585,
+    "mtime_ns": 1788071343678876381,
+    "indexed_at_ns": 1788071347804974812,
+    "word_count": 1191
+  },
+  "supabase/migrations/20260829205025_1e153a98-42b2-4680-acc1-57932ff281c4.sql": {
+    "size": 5274,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348204946898,
+    "word_count": 525,
+    "hashes": {
+      "supabase/migrations/20260829205025_1e153a98-42b2-4680-acc1-57932ff281c4.sql": "20534cc4b7530203a7ee697fdeb172c59fa11c58702ef89772ffe513fccdaa1d"
+    }
+  },
+  "src/lib/planner/integration.test.ts": {
+    "size": 29378,
+    "mtime_ns": 1788071343678876381,
+    "indexed_at_ns": 1788071347804279686,
+    "word_count": 2211
+  },
+  "src/lib/review/engine.test.ts": {
+    "size": 27114,
+    "mtime_ns": 1788071343681066957,
+    "indexed_at_ns": 1788071347824401944,
+    "word_count": 2346
+  },
+  "src/lib/review/engine.ts": {
+    "size": 21712,
+    "mtime_ns": 1788071343681956597,
+    "indexed_at_ns": 1788071347825090028,
+    "word_count": 2215
+  },
+  "src/lib/review/types.ts": {
+    "size": 3576,
+    "mtime_ns": 1788071343681956597,
+    "indexed_at_ns": 1788071347828176015,
+    "word_count": 380
+  },
+  "supabase/migrations/20260829212449_etapa4_fase2_review_database.sql": {
+    "size": 7661,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348205268077,
+    "word_count": 527,
+    "hashes": {
+      "supabase/migrations/20260829212449_etapa4_fase2_review_database.sql": "76488a3e512eb5acf1ed7814e03b4c5ccbd7dfcc695ca197e5e3c5a1fba2dac4"
+    }
+  },
+  "src/lib/review/integration.test.ts": {
+    "size": 25937,
+    "mtime_ns": 1788071343681956597,
+    "indexed_at_ns": 1788071347825773233,
+    "word_count": 2408
+  },
+  "src/lib/review/service.ts": {
+    "size": 17590,
+    "mtime_ns": 1788071343681956597,
+    "indexed_at_ns": 1788071347827531763,
+    "word_count": 1594
+  },
+  "supabase/migrations/20260829214110_8d8c3370-5b6a-4c78-ab37-04284ddfa71d.sql": {
+    "size": 2382,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348205586631,
+    "word_count": 262,
+    "hashes": {
+      "supabase/migrations/20260829214110_8d8c3370-5b6a-4c78-ab37-04284ddfa71d.sql": "8a87aff1d1c3d9f48ad6abadd15837a75db0e0ea774cc4902a07c756cf4b3811"
+    }
+  },
+  "src/lib/review/presentation.test.ts": {
+    "size": 1832,
+    "mtime_ns": 1788071343681956597,
+    "indexed_at_ns": 1788071347826448903,
+    "word_count": 130
+  },
+  "src/lib/review/presentation.ts": {
+    "size": 2539,
+    "mtime_ns": 1788071343681956597,
+    "indexed_at_ns": 1788071347826997697,
+    "word_count": 304
+  },
+  "src/routes/_authenticated/revisao/index.tsx": {
+    "size": 6685,
+    "mtime_ns": 1788071343685508804,
+    "indexed_at_ns": 1788071347850727446,
+    "word_count": 551
+  },
+  "src/lib/scheduler/types.ts": {
+    "size": 8338,
+    "mtime_ns": 1788071343682460627,
+    "indexed_at_ns": 1788071347831247936,
+    "word_count": 782
+  },
+  "supabase/migrations/20260829221900_etapa5_fase1_plan_tasks_source.sql": {
+    "size": 2484,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348205932787,
+    "word_count": 167,
+    "hashes": {
+      "supabase/migrations/20260829221900_etapa5_fase1_plan_tasks_source.sql": "142fc4285c3e1154612977c94d3934faacccfce272e14e77f49440b5df08bd65"
+    }
+  },
+  "src/lib/scheduler/engine.test.ts": {
+    "size": 17289,
+    "mtime_ns": 1788071343681956597,
+    "indexed_at_ns": 1788071347828736681,
+    "word_count": 1649
+  },
+  "src/lib/scheduler/engine.ts": {
+    "size": 18040,
+    "mtime_ns": 1788071343682460627,
+    "indexed_at_ns": 1788071347829353512,
+    "word_count": 1757
+  },
+  "src/lib/scheduler/integration.test.ts": {
+    "size": 17672,
+    "mtime_ns": 1788071343682460627,
+    "indexed_at_ns": 1788071347830004747,
+    "word_count": 1679
+  },
+  "src/lib/scheduler/service.ts": {
+    "size": 14443,
+    "mtime_ns": 1788071343682460627,
+    "indexed_at_ns": 1788071347830624463,
+    "word_count": 1335
+  },
+  "supabase/migrations/20260829223733_bf96f0bb-c4bd-44e9-8cb8-bedcd501733f.sql": {
+    "size": 838,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348206248536,
+    "word_count": 94,
+    "hashes": {
+      "supabase/migrations/20260829223733_bf96f0bb-c4bd-44e9-8cb8-bedcd501733f.sql": "632aee57cd2baf22999dfdb1bee21f05a08063a414c86156b21d0026ca8b98b9"
+    }
+  },
+  "src/lib/planner/unified-integration.test.ts": {
+    "size": 19667,
+    "mtime_ns": 1788071343678876381,
+    "indexed_at_ns": 1788071347806929689,
+    "word_count": 1839
+  },
+  "src/lib/questions/engine.test.ts": {
+    "size": 19155,
+    "mtime_ns": 1788071343679775198,
+    "indexed_at_ns": 1788071347810863728,
+    "word_count": 1455
+  },
+  "src/lib/questions/engine.ts": {
+    "size": 15580,
+    "mtime_ns": 1788071343679775198,
+    "indexed_at_ns": 1788071347811478796,
+    "word_count": 1572
+  },
+  "src/lib/questions/types.ts": {
+    "size": 12036,
+    "mtime_ns": 1788071343681066957,
+    "indexed_at_ns": 1788071347823812645,
+    "word_count": 1233
+  },
+  "supabase/migrations/20260829231200_etapa6_fase1_question_bank.sql": {
+    "size": 10425,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348206567271,
+    "word_count": 925,
+    "hashes": {
+      "supabase/migrations/20260829231200_etapa6_fase1_question_bank.sql": "ccf277cded3150987e819f8a60f8476426a22ec09ceec107edff3b2f085ee4a3"
+    }
+  },
+  "src/lib/questions/service.test.ts": {
+    "size": 22104,
+    "mtime_ns": 1788071343681066957,
+    "indexed_at_ns": 1788071347822447428,
+    "word_count": 1723
+  },
+  "src/lib/questions/service.ts": {
+    "size": 27813,
+    "mtime_ns": 1788071343681066957,
+    "indexed_at_ns": 1788071347823109082,
+    "word_count": 2556
+  },
+  "src/lib/questions/attempt-service.test.ts": {
+    "size": 17869,
+    "mtime_ns": 1788071343679775198,
+    "indexed_at_ns": 1788071347808890006,
+    "word_count": 1460
+  },
+  "src/lib/questions/attempt-service.ts": {
+    "size": 15651,
+    "mtime_ns": 1788071343679775198,
+    "indexed_at_ns": 1788071347809563603,
+    "word_count": 1567
+  },
+  "src/lib/questions/error-integration.test.ts": {
+    "size": 25616,
+    "mtime_ns": 1788071343679775198,
+    "indexed_at_ns": 1788071347812694203,
+    "word_count": 1916
+  },
+  "src/lib/questions/error-integration.ts": {
+    "size": 7344,
+    "mtime_ns": 1788071343679775198,
+    "indexed_at_ns": 1788071347813347963,
+    "word_count": 711
+  },
+  "src/lib/questions/knowledge-integration.test.ts": {
+    "size": 26403,
+    "mtime_ns": 1788071343679899221,
+    "indexed_at_ns": 1788071347816499723,
+    "word_count": 2023
+  },
+  "src/lib/questions/knowledge-integration.ts": {
+    "size": 12579,
+    "mtime_ns": 1788071343679899221,
+    "indexed_at_ns": 1788071347817180172,
+    "word_count": 1162
+  },
+  "src/lib/study-session/engine.test.ts": {
+    "size": 20244,
+    "mtime_ns": 1788071343682460627,
+    "indexed_at_ns": 1788071347831835973,
+    "word_count": 1897
+  },
+  "src/lib/study-session/engine.ts": {
+    "size": 12486,
+    "mtime_ns": 1788071343683013689,
+    "indexed_at_ns": 1788071347832460017,
+    "word_count": 1187
+  },
+  "src/lib/study-session/types.ts": {
+    "size": 7334,
+    "mtime_ns": 1788071343683013689,
+    "indexed_at_ns": 1788071347836972355,
+    "word_count": 725
+  },
+  "src/lib/study-session/service.test.ts": {
+    "size": 11115,
+    "mtime_ns": 1788071343683013689,
+    "indexed_at_ns": 1788071347834446453,
+    "word_count": 971
+  },
+  "src/lib/study-session/service.ts": {
+    "size": 9510,
+    "mtime_ns": 1788071343683013689,
+    "indexed_at_ns": 1788071347835047354,
+    "word_count": 863
+  },
+  "src/lib/study-session/session-service.test.ts": {
+    "size": 27318,
+    "mtime_ns": 1788071343683013689,
+    "indexed_at_ns": 1788071347835620593,
+    "word_count": 2345
+  },
+  "src/lib/study-session/session-service.ts": {
+    "size": 20036,
+    "mtime_ns": 1788071343683013689,
+    "indexed_at_ns": 1788071347836307675,
+    "word_count": 1967
+  },
+  "src/lib/study-session/execution-service.test.ts": {
+    "size": 21919,
+    "mtime_ns": 1788071343683013689,
+    "indexed_at_ns": 1788071347833082879,
+    "word_count": 1747
+  },
+  "src/lib/study-session/execution-service.ts": {
+    "size": 12789,
+    "mtime_ns": 1788071343683013689,
+    "indexed_at_ns": 1788071347833814193,
+    "word_count": 1243
+  },
+  "supabase/migrations/20260830012002_784d5319-8c00-46c5-bd3e-b9ddae595415.sql": {
+    "size": 5597,
+    "mtime_ns": 1788071343686406008,
+    "indexed_at_ns": 1788071348206912926,
+    "word_count": 613,
+    "hashes": {
+      "supabase/migrations/20260830012002_784d5319-8c00-46c5-bd3e-b9ddae595415.sql": "141cc69212f4c55cc82dd3a7f8ba412b32f239cb14e242f8b024fae3994b7a82"
+    }
+  },
+  "src/routes/_authenticated/estudo/index.tsx": {
+    "size": 25854,
+    "mtime_ns": 1788071343684803238,
+    "indexed_at_ns": 1788071347846523774,
+    "word_count": 2030
+  },
+  "src/lib/error-central/engine.test.ts": {
+    "size": 26427,
+    "mtime_ns": 1788071343677582697,
+    "indexed_at_ns": 1788071347795260720,
+    "word_count": 2161
+  },
+  "src/lib/error-central/engine.ts": {
+    "size": 11343,
+    "mtime_ns": 1788071343678083331,
+    "indexed_at_ns": 1788071347795946008,
+    "word_count": 1273
+  },
+  "src/lib/error-central/service.test.ts": {
+    "size": 14959,
+    "mtime_ns": 1788071343678083331,
+    "indexed_at_ns": 1788071347796548863,
+    "word_count": 1181
+  },
+  "src/lib/error-central/service.ts": {
+    "size": 15051,
+    "mtime_ns": 1788071343678083331,
+    "indexed_at_ns": 1788071347797172797,
+    "word_count": 1338
+  },
+  "src/routes/_authenticated/questoes/index.tsx": {
+    "size": 27235,
+    "mtime_ns": 1788071343685508804,
+    "indexed_at_ns": 1788071347849975102,
+    "word_count": 1903
+  },
+  "src/lib/questions/ingestion.test.ts": {
+    "size": 18864,
+    "mtime_ns": 1788071343679899221,
+    "indexed_at_ns": 1788071347815219735,
+    "word_count": 1455
+  },
+  "src/lib/questions/ingestion.ts": {
+    "size": 18462,
+    "mtime_ns": 1788071343679899221,
+    "indexed_at_ns": 1788071347815859268,
+    "word_count": 1937
+  },
+  "src/lib/questions/adapters/image-adapter.test.ts": {
+    "size": 16185,
+    "mtime_ns": 1788071343679657348,
+    "indexed_at_ns": 1788071347807629695,
+    "word_count": 948
+  },
+  "src/lib/questions/adapters/image-adapter.ts": {
+    "size": 7160,
+    "mtime_ns": 1788071343679775198,
+    "indexed_at_ns": 1788071347808298613,
+    "word_count": 739
+  },
+  "src/lib/questions/extraction.test.ts": {
+    "size": 23645,
+    "mtime_ns": 1788071343679775198,
+    "indexed_at_ns": 1788071347813934326,
+    "word_count": 1788
+  },
+  "src/lib/questions/extraction.ts": {
+    "size": 17695,
+    "mtime_ns": 1788071343679899221,
+    "indexed_at_ns": 1788071347814568700,
+    "word_count": 1632
+  },
+  "src/lib/questions/providers/google-gemini.test.ts": {
+    "size": 24251,
+    "mtime_ns": 1788071343681066957,
+    "indexed_at_ns": 1788071347821086750,
+    "word_count": 1828
+  },
+  "src/lib/questions/providers/google-gemini.ts": {
+    "size": 15163,
+    "mtime_ns": 1788071343681066957,
+    "indexed_at_ns": 1788071347821822342,
+    "word_count": 1487
+  },
+  "src/lib/questions/providers/gemini-config.test.ts": {
+    "size": 7454,
+    "mtime_ns": 1788071343679899221,
+    "indexed_at_ns": 1788071347817856684,
+    "word_count": 505
+  },
+  "src/lib/questions/providers/gemini-config.ts": {
+    "size": 4812,
+    "mtime_ns": 1788071343681066957,
+    "indexed_at_ns": 1788071347818458617,
+    "word_count": 411
+  },
+  "src/lib/questions/providers/gemini-service.test.ts": {
+    "size": 22479,
+    "mtime_ns": 1788071343681066957,
+    "indexed_at_ns": 1788071347819699201,
+    "word_count": 1498
+  },
+  "src/lib/questions/providers/gemini-service.ts": {
+    "size": 11425,
+    "mtime_ns": 1788071343681066957,
+    "indexed_at_ns": 1788071347820387004,
+    "word_count": 1114
+  },
+  "src/lib/questions/create-question.test.ts": {
+    "size": 15159,
+    "mtime_ns": 1788071343679775198,
+    "indexed_at_ns": 1788071347810222081,
+    "word_count": 1133
+  },
+  "src/routes/_authenticated/questoes/importar.tsx": {
+    "size": 22735,
+    "mtime_ns": 1788071343685298001,
+    "indexed_at_ns": 1788071347849260870,
+    "word_count": 1544
+  },
+  "src/lib/questions/providers/gemini-server-fn.ts": {
+    "size": 3590,
+    "mtime_ns": 1788071343681066957,
+    "indexed_at_ns": 1788071347819089654,
+    "word_count": 301
+  },
+  "src/lib/questions/entity-resolver.ts": {
+    "size": 7037,
+    "mtime_ns": 1788071343679775198,
+    "indexed_at_ns": 1788071347812115443,
+    "word_count": 728
+  }
+}
